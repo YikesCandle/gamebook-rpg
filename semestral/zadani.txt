@@ -3,7 +3,7 @@ zadání: Textové RPG (Gamebook)
 
 
 
-//------ v složce semestral je i docx formát tohoto textu
+//------ ve složce semestral je i docx formát tohoto textu
 
 Popis řešení úlohy: (textové RPG (Gamebook))
 

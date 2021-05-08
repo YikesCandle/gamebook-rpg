@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <iostream>
+#include <ncurses.h>
 #include "gamedata.hpp"
 #include "action.hpp"
 
@@ -18,10 +19,9 @@ class Game
         void End();
         void Play();
 
-        void Menu();
-
     private:
 
+        void Init();
         // --- new game ---
         void Create_character();
         void Show_story() const;

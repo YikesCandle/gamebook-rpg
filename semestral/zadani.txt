@@ -1,1 +1,1 @@
-# Zadani semestralni prace z Progtestu
+zadání: Textové RPG (Gamebook)

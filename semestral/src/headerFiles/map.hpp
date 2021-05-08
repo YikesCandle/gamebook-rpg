@@ -1,0 +1,13 @@
+
+
+class Map
+{
+
+};
+
+
+
+class Location
+{
+
+};

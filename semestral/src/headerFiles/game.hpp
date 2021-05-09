@@ -3,16 +3,20 @@
 
 #include <iostream>
 #include <ncurses.h>
+#include <vector>
 #include "gamedata.hpp"
 #include "action.hpp"
+#include "choicer.hpp"
 
 
+static const int SCREEN_WIDTH = 30;
+static const int SCREEN_HEIGHT = 15;
 
 class Game
 {
     public:
 
-         Game() = default;
+        Game();
         ~Game() = default;
 
         void Start();
@@ -38,6 +42,9 @@ class Game
         void EvokeAction(const Action & action);
 
         // DATA
+        bool running = false;
+        bool playing = false;
+        WINDOW * window;
         GameData Data;
 };
 

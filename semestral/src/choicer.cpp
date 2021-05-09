@@ -2,12 +2,13 @@
 
 using namespace std;
 
-Choicer::Choicer(vector<Choice>  choiceList_, int y1, int x1, int y2, int x2)
-: choiceList(choiceList_), window(newwin(y1, x1, y2, x2))
+Choicer::Choicer(vector<Choice>  choiceList_)
+: choiceList(choiceList_), x1(SCREEN_WIDTH), y1(5), x2(0), y2(SCREEN_HEIGHT), start(0)
 {
-    keypad(this->window, true); // allow keypad
+    this->window = newwin(y1, x1, y2, x2);
+    keypad(this->window, true);
 }
-int Choicer::select_next(int selected)
+int Choicer::Choicer::select_next(int selected)
 {
     selected++;
     if (selected >= (int)this->choiceList.size())
@@ -40,16 +41,18 @@ int Choicer::ask_for_choice()
     {
         switch (key)
         {
-            case KEY_DOWN:  selected = select_next(selected);     break;
-            case KEY_UP:    selected = seelct_previous(selected); break;
-            case KEY_ENTER: enter    = true;                      break;
+            case KEY_RIGHT:  selected = select_next(selected);     break;
+            case KEY_LEFT:   selected = seelct_previous(selected); break;
+            case KEY_ENTER:  enter    = true;                      break;
             default:
         }
         draw(selected);
-        refresh();
+        wrefresh(this->window);
         if (enter)
             break;
     }
+    werase(this->window);
+    delete(this->window);
     return selected;
 }
 //----------------------------------------------------------------------
@@ -60,6 +63,6 @@ void Choice::draw(WINDOW * window, bool selected = false)
     mvwprintw(window, this->x, this->y, this->text.c_str());
     wattroff(window, A_STANDOUT);
 }
-Choice::Choice(string text_, int x_, int y_)
-: text(text_), x(x_), y(y_)
+Choice::Choice(string text_)
+: text(text_)
 { }

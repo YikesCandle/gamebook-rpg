@@ -1,1 +1,53 @@
-# Zadani semestralni prace z Progtestu
+zadání: Textové RPG (Gamebook)
+
+
+
+
+//------ ve složce semestral je i docx formát tohoto textu
+
+Popis řešení úlohy: (textové RPG (Gamebook))
+
+Hra je zamýšlená jako jednoduché RPG s volným světem. Program funguje následovně:
+
+Hráč začne novou, nebo rozehranou hru. V obou případech se objeví ve světě typu
+N x N, na konkrétní lokaci, kde si může zvolit činnost. Má na výběr: prohledání
+dané lokace, posunutí se do jiné, podívání se do inventáře, otevření mapy atd.
+Většinou tato volba vyvolá nějakou akci, která ovlivní svět. Např.: Hráč se
+dostane do jiné lokace po akci přesun, získá předmět po akci nákup, zvýší svou
+úroveň po akci souboj. (Zde bude využit polymorfismus, odstavec o využití
+polymorfismu.) Následně je tato akce ukončena, a volba se opakuje. Toto je
+zřejmou hlavní herní smyčkou.
+V každé lokaci budou dostupné různé akce. (V lokaci město bude akce obchod, v
+lokaci les akce napadni jelena … třeba. :D) Program bude využívat základní
+funkce knihovny <ncurses>, hlavně pro interakci s hráčem.
+Další herní mechaniky:
+
+-	Ve hře se počítá herní čas podle toho, jaké akce proběhly. Například, když
+cestuji lesem v noci, je větší šance, že budu napaden. I hlavní příběh hry je
+ovlivněn časem. (určité akce v lokacích)
+-	Každá lokace má úroveň, čím větší, tím silnější monstra, na které můžu
+narazit. (to asi není až tak moc kreativní)
+-	Sbírání různých předmětů pro splnění akce úkol (quest) nebo pro dostávání
+se do dříve uzavřených lokací.
+
++ další, a ještě ty, co mě zatím napadnou.
+
+Využití polymorfismu:
+
+Polymorfismus je využíván hlavně u akcí, co hráče mohou potkat. Např.: Každá
+akce má dobu trvání, úvodní příběh, potom nějakou interakci s hráčem
+(nakupování, bojování s příšerou, rozhovor se starcem s holí). V každé lokaci
+bude seznam akcí, které se budou moci snadno přidávat, odebírat, náhodně vybírat.
+Další použití polymorfismu plánuji pro předměty. Každý bude se bude dát něja
+použít, zahodit, prodat. Dále, pokud zbyde čas, tak udělám různé druhy nepřátel,
+speciální útoky, jiný způsob boje.
+
+Návrh tříd:
+
+Celý program ovládá třída Game. Informace o aktuální hře jí poskytuje třída
+GameData, která skladuje data jako Map, Time a Player. Mapa je 2D list třídy
+Location, které obsahují list dostupných instancí třídy Action. Time manipuluje
+s herním časem. Player má další věci jako Stats, Inventar. A tak dále, je to
+jen menší ukázka návrhu. Uvidíme, jak to vyjde s délkou zdrojáku, když tak není
+problém omezit nějaké funkce. 
+

@@ -58,3 +58,41 @@ void Game::Play()
         }
     }
 }
+
+// todo
+void Game::Create_character()
+{
+
+}
+void Game::Show_story() const
+{
+    
+}
+void Game::Load_data()
+{
+    
+}
+void Game::LookAround()
+{
+    
+}
+void Game::Travel()
+{
+    
+}
+void Game::OpenInventory()
+{
+    
+}
+void Game::OpenMap() const
+{
+    
+}
+void Game::OpenMenu() const
+{
+    
+}
+void Game::EvokeAction(const Action & action)
+{
+    
+}

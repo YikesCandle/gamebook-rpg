@@ -4,29 +4,14 @@
 #include <ncurses.h>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "game.hpp"
-
-class Choice
-{
- 
-    public:
-
-        Choice(std::string text);
-
-    private:
-
-        friend class Choicer;
-
-        void draw(WINDOW * screen, bool selected = false);
-
-        std::string text; // to display
-};
 
 class Choicer
 {
     public:
 
-        Choicer(std::vector<Choice> choiceList);
+        Choicer(std::vector<std::string> _choiceList);
 
         int ask_for_choice();
 
@@ -34,18 +19,17 @@ class Choicer
 
         void init_window();
         void close_window();
-        int select_next(int selected);
-        int seelct_previous(int selected);
-        void draw(int selected);
+        void select_next();
+        void selct_previous();
+        void draw();
 
-        std::vector<Choice> choiceList;
+        std::vector<std::string> choiceList;
         // screen coords
-        int x1;
-        int y1;
-        int x2;
-        int y2;
+        int x1; int y1;
+        int x2; int y2;
+        int selected;
+        std::vector<int> edges;
         WINDOW *window;
-        int start;
 };
 
 #endif // CHOICER_H

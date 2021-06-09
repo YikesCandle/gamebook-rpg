@@ -1,4 +1,4 @@
-#include "game.hpp"
+#include "headerFiles/game.hpp"
 
 using namespace std;
 
@@ -23,10 +23,11 @@ void Game::Start()
 {
     this->running = true;
     this->Init();
-    Choicer mainManu("New Game", "Load Game", "Quit Game");
+    vector<string> choices = {"New Game", "Load Game", "Quit Game", "Test1", "Test2", "Test3", "Test4", "Test5"};
+    Choicer mainMenu(choices);
     while (this->running)
     {
-        int select = mainManu.ask_for_choice();
+        int select = mainMenu.ask_for_choice();
         switch(select)
         {
             case 0:
@@ -42,7 +43,8 @@ void Game::Start()
 }
 void Game::Play()
 {
-    Choicer actions("rozlédnou se po oblasi", "cestovat", "otevřít inventář", "prohlédout mapu", "menu");
+    vector<string> choices = {"look around", "travel", "open inventar", "open map", "menu"};
+    Choicer actions(choices);
     this->playing = true;
     // gameloop
     while (this->playing)

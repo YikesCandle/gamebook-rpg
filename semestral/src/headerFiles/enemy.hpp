@@ -12,10 +12,10 @@ class Enemy
         //...
 
     private:
-        std::stirng name;
+        std::string name;
         Stats stats;
 
-}
+};
 
 /*
 class Ogr : public Enemy

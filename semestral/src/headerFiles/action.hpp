@@ -2,7 +2,7 @@
 #define ACTION_H
 
 
-#include <iostream;
+#include <iostream>
 #include <memory>
 #include "enemy.hpp"
 #include "gamedata.hpp"

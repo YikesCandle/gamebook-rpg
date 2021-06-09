@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <string>
-#include "game.hpp"
+#include "headerFiles/game.hpp"
 
 using namespace std;
 

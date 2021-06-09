@@ -9,7 +9,7 @@
 #include "choicer.hpp"
 
 
-static const int SCREEN_WIDTH = 30;
+static const int SCREEN_WIDTH = 60;
 static const int SCREEN_HEIGHT = 15;
 
 class Game

@@ -5,13 +5,19 @@
 #include <iostream>
 #include <memory>
 #include "enemy.hpp"
-#include "gamedata.hpp"
+#include "player.hpp"
+#include "other.hpp"
+
 
 class Action
 {
     public:
-        virtual void Evoke() = 0;
-    private:
+        Action() = default;
+        virtual ~Action() = default;
+        virtual void Evoke(Player & player);
+        std::string get_type();
+    protected:
+        std::string type;
         int timeNeeded;
 };
 
@@ -20,18 +26,20 @@ class Action
 class Fight : public Action
 {
     public:
-        virtual void Evoke() override;
+        Fight(const Enemy & enemy);
+        virtual ~Fight() = default;
+        virtual void Evoke(Player & player) override;
     private:
         Enemy enemy;
+        bool attacking;
 };
 
 class Travel : public Action
 {
     public:
-        virtual void Evoke() override;
+        virtual ~Travel() = default;
+        virtual void Evoke(Player & player) override;
     private:
-        int fromX;
-        int fromY;
         int toX;
         int toY;
 
@@ -41,7 +49,8 @@ class Travel : public Action
 class Shop : public Action
 {
     public:
-        virtual void Evoke() override;
+        virtual ~Shop() = default;
+        virtual void Evoke(Player & player) override;
     private:
 };
 

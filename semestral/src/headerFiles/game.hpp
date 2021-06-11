@@ -4,13 +4,12 @@
 #include <iostream>
 #include <ncurses.h>
 #include <vector>
+#include <random>
 #include "gamedata.hpp"
 #include "action.hpp"
 #include "choicer.hpp"
+#include "other.hpp"
 
-
-static const int SCREEN_WIDTH = 60;
-static const int SCREEN_HEIGHT = 15;
 
 class Game
 {
@@ -27,8 +26,9 @@ class Game
 
         void Init();
         // --- new game ---
-        void Create_character();
+        int Create_character();
         void Show_story() const;
+        void init_new_game_data();
 
         // --- load game ---
         void Load_data();
@@ -39,12 +39,11 @@ class Game
         void OpenInventory();
         void OpenMap() const;
         void OpenMenu() const;
-        void EvokeAction(const Action & action);
+        //void EvokeAction(const Action & action);
 
         // DATA
         bool running = false;
         bool playing = false;
-        WINDOW * window;
         GameData Data;
 };
 

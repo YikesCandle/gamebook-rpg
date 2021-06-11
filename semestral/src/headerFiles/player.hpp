@@ -2,54 +2,34 @@
 #define PLAYER_H
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <memory>
 #include "other.hpp"
 
-class Item
-{
-    public:
-        virtual void Use() = 0;
-    private:
-        Stats stats;
-        int level;
-        int cost;
-};
-class Armor : public Item
-{
-    public:
-        virtual void Use() = 0;
-    private:
-};
-class Weapon : public Item
-{
-    public:
-        virtual void Use() = 0;
-    private:
-};
-class Consumable : public Item
-{
-    public:
-        virtual void Use() = 0;
-    private:
-};
-
-class Inventory
-{
-    public:
-        void draw();
-        void resize();
-    private:
-        int size;
-        std::vector<std::shared_ptr<Item> > items;
-};
 
 class Player
 {
     public:
+        Player();
+        std::string get_name();
+        void set_name(const std::string & playerName);
+        void newGamePlayer();
+        std::vector<Ability> get_abilities();
     private:
+        friend class Fight;
+        friend class GameData;
         Stats stats;
+        int actualHealth;
+        int actualMana;
+        int level;
         Inventory inventory;
+        std::vector<Ability> abilities;
+
+        std::string name;
+        int actualPositionX;
+        int actualPositionY;
+
         
 };
 #endif // PLAYER_H

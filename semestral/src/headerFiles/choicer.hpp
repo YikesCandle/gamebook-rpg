@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "game.hpp"
+#include "other.hpp"
 
 class Choicer
 {

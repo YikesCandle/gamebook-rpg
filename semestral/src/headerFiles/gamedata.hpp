@@ -4,7 +4,10 @@
 #include "player.hpp"
 #include <string>
 #include <vector>
+#include <memory>
 #include "action.hpp"
+#include "other.hpp"
+#include "enemy.hpp"
 
 class Time
 {
@@ -15,22 +18,26 @@ class Time
         int time; // minutes
 };
 
+struct Location
+{
+    std::string name;
+    int level;
+    bool visited;
+    int type;
+    std::vector<std::shared_ptr<Action> > avaliableActions;
+    std::vector<std::shared_ptr<Action> > travelAction;
+};
+
 class Map
 {
     public:
+        Map();
         void showMap();
-
+        void newGameMap();
     private:
-        struct Location
-        {
-            std::string name;
-            int level;
-            bool visited;
-            int type;
-            std::vector<Action> avaliableActions;
-            std::vector<Action> travelAction;
-        };
-        std::vector<Location> map;
+        friend class Game;
+        friend class GameData;
+        std::vector<std::vector<Location> > map;
 };
 class GameData
 {
@@ -38,9 +45,13 @@ class GameData
 
          GameData() = default;
         ~GameData() = default;
-        // data manipulation
 
+        std::vector<Ability> get_playerAbilities();
+        void set_playerAbilities(const std::vector<Ability> & ab);
+        Location & getCurrentLocation();
+        // data manipulation
     private:
+        friend class Game;
         Player player;
         Time time;
         Map map;

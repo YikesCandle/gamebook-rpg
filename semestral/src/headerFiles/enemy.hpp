@@ -4,27 +4,24 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
+#include <memory>
 #include "other.hpp"
 
-class Enemy
+struct Enemy
 {
-    public:
-        //...
-
-    private:
+        Enemy();
         std::string name;
+        std::string startOfFight;
+        std::string attack;
         Stats stats;
-
+        int actualHealth;
+        int attactType;
+        int level;
+        int experience;
+        std::map<double, std::shared_ptr<Item> > drops;
+        std::vector<Ability> abilities;
 };
-
-/*
-class Ogr : public Enemy
-{
-    public:
-    private:
-    ....
-}
-*/
 
 #endif // ENEMY_H
 

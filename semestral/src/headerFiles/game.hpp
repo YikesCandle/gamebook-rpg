@@ -32,14 +32,16 @@ class Game
 
         // --- load game ---
         void Load_data();
+        void SaveGame();
     
         // --- in game functions ---
         void LookAround();
-        void Travel();
+        void OpenGear();
         void OpenInventory();
-        void OpenMap() const;
+        void OpenMap();
         void OpenMenu();
         //void EvokeAction(const Action & action);
+        void PlayerDead();
 
         // DATA
         bool running = false;

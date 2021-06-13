@@ -11,15 +11,97 @@ void Player::set_name(const string & playerName)
     this->name = playerName;
 }
 
+void Player::addToEquip(shared_ptr<Item> & item)
+{
+    this->equipedItems.push_back(item);
+    Equipable * tmp = dynamic_cast<Equipable *>(&(*item));
+
+    this->stats += tmp->get_stats();
+    for (Ability & ab : tmp->get_abilities())
+        this->abilities.push_back(ab);
+}
+
+void Player::removeFromEquip(std::shared_ptr<Item> & item)
+{
+    this->equipedItems.erase(find_if(equipedItems.begin(), equipedItems.end(), [item](shared_ptr<Item> & A) -> bool
+    {
+        return A->getID() == item->getID();
+    }));
+    Equipable * tmp = dynamic_cast<Equipable *>(&(*item));
+
+    this->stats -= tmp->get_stats();
+    for (Ability & ab : tmp->get_abilities())
+    {
+        this->abilities.erase(
+            find_if(abilities.begin(), abilities.end(), [ab](Ability & A) -> bool
+                {
+                    return A.name == ab.name;
+                })
+        );
+    }
+}
+
+ bool Player::isItemEquiped(std::shared_ptr<Item> & item)
+ {
+     return find_if(equipedItems.begin(), equipedItems.end(), [item](shared_ptr<Item> & A) -> bool
+    {
+        return A->getID() == item->getID();
+    })!= equipedItems.end();
+ }
+
+void Player::itemManipulate(shared_ptr<Item> & item)
+{
+    Equipable * tmp = dynamic_cast<Equipable *>(&(*item));
+    if (tmp != nullptr)
+    {
+        item->showInfo();
+        while (true)
+        {
+            vector<string> choices = {"Back"};
+            vector<shared_ptr<Item> > showObjects = {item, item};
+            if (isItemEquiped(item))
+                choices.push_back("Unequip");
+            else
+                choices.push_back("Equip");
+            Choicer choicer(choices);
+            switch (choicer.ask_for_choice(showObjects))
+            {
+                case 0: this->closeInfo(); return;
+                case 1:
+                {
+                    if (isItemEquiped(item))
+                        this->removeFromEquip(item);
+                    else
+                    {
+                        auto it = find_if(equipedItems.begin(), equipedItems.end(), [item](shared_ptr<Item> & A) -> bool
+                        {
+                            return A->get_type() == item->get_type();
+                        });
+                        if (it == equipedItems.end())
+                            this->addToEquip(item);
+                        else
+                        {
+                            vector<string> txt = {"You already have this type of item equiped.", 
+                                        "You can have only one piece of every equipable item type at the same time"};
+                            show_text(txt);
+                        }
+                    }
+                }
+            }
+        }
+        this->closeInfo();
+    }
+}
+
 void Player::newGamePlayer()
 {
     this->inventory.size = 5;
-    this->stats.health = 100;
-    this->actualHealth = 100;
+    this->stats.health = 1000;
+    this->actualHealth = 10;
     this->actualPositionX = 0;
     this->actualPositionY = 0;
     this->level = 1;
-    this->stats.strenght = 1;
+    this->stats.strenght = 4;
     Ability punch;
     punch.name = "punch";
     punch.strengthScale = 4;
@@ -33,6 +115,8 @@ void Player::newGamePlayer()
     kick.intScale = 0;
     this->abilities.push_back(kick);
     this->alive = true;
+    this->inventory.add_item(Equipable().randomItem(3, 2, 70));
+    this->inventory.add_item(Equipable().randomItem(3, 0, 70));
 }
 
 void Player::add_experience(int exp)
@@ -47,6 +131,21 @@ std::vector<Ability> Player::get_abilities()
 
 Player::Player()
 {
+}
+
+vector<shared_ptr<Item> > & Player::get_inventory()
+{
+    return this->inventory.items;
+}
+
+vector<shared_ptr<Item> > & Player::get_equip()
+{
+    return this->equipedItems;
+}
+
+bool Player::isAlive()
+{
+    return this->alive;
 }
 
 void Player::showInfo()

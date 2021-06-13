@@ -53,6 +53,39 @@ void Item::closeInfo()
 
 }
 
+int Item::getID() const
+{
+    return ID;
+}
+
+Stats & Equipable::get_stats()
+{
+    return this->stats;
+}
+
+vector<Ability> & Equipable::get_abilities()
+{
+    return this->abilities;
+}
+
+Stats & Stats::operator += (const Stats & s2)
+{
+    this->health += s2.health;
+    this->inteligence += s2.inteligence;
+    this->defence += s2.defence;
+    this->strenght += s2.strenght;
+    return *this;
+}
+
+Stats & Stats::operator -= (const Stats & s2)
+{
+    this->health -= s2.health;
+    this->inteligence -= s2.inteligence;
+    this->defence -= s2.defence;
+    this->strenght -= s2.strenght;
+    return *this;
+}
+
 void Equipable::showInfo()
 {
     char number[20] = {};
@@ -136,6 +169,15 @@ Stats::Stats(int h, int s, int d, int i)
     this->health = h;
 }
 
+std::string Item::get_type()
+{
+    return string();
+}
+std::string Equipable::get_type()
+{
+    return this->type;
+}
+
 shared_ptr<Item> Item::randomItem(int level, int id, int state)
 {
     throw (exception());
@@ -187,6 +229,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 0 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 1:
@@ -232,6 +275,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 0 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 2:
@@ -268,6 +312,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 0 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 3:
@@ -314,6 +359,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 0 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 4:
@@ -344,6 +390,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 8 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 5:
@@ -373,6 +420,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 10 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 6:
@@ -403,6 +451,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 2 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 7:
@@ -433,6 +482,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 3 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 8:
@@ -463,6 +513,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 2 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
         case 9:
@@ -493,6 +544,7 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
                 stats.health -= 3 * level;
             }
             item->stats = stats;
+            item->ID = ITEM_ID++;
             return item;
         }
     }

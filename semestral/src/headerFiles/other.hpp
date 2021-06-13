@@ -11,11 +11,14 @@
 
 static const int SCREEN_WIDTH = 66;
 static const int SCREEN_HEIGHT = 18;
+static int ITEM_ID;
 
 struct Stats
 {
     Stats() = default;
     Stats(int h, int s, int d, int i);
+    Stats & operator += (const Stats & s2);
+    Stats & operator -= (const Stats & s2);
     int health = 0;
     int strenght = 0;
     int defence = 0;
@@ -37,14 +40,17 @@ class Item
     public:
         virtual std::shared_ptr<Item> randomItem(int level, int id, int state);
         std::string get_name();
+        virtual std::string get_type();
         int get_level();
         int get_cost();
         virtual void showInfo();
         virtual void closeInfo();
+        int getID() const;
     protected:
         std::string name;
         int level;
         int cost;
+        int ID;
         WINDOW * itemWindow;
 };
 class Equipable : public Item
@@ -53,6 +59,9 @@ class Equipable : public Item
         virtual std::shared_ptr<Item> randomItem(int level, int id, int state) override;
         virtual void showInfo() override;
         virtual void closeInfo() override;
+        Stats & get_stats();
+        std::vector<Ability> & get_abilities();
+        virtual std::string get_type() override;
     private:
         Stats stats;
         std::string type;

@@ -47,17 +47,20 @@ void Game::Play()
     // gameloop
     while (this->playing)
     {
-        vector<string> choices = {"look around", "travel", "open inventar", "open map", "menu"};
+        vector<string> choices = {"look around", "You", "open inventar", "open map", "save", "menu"};
         Choicer actions(choices);
         int select = actions.ask_for_choice();
         switch(select)
         {
             case 0: this->LookAround();     break;
-            case 1: this->Travel();         break;
+            case 1: this->OpenGear();       break;
             case 2: this->OpenInventory();  break;
             case 3: this->OpenMap();        break;
-            case 4: this->OpenMenu();       break;
+            case 4: this->SaveGame();       break;
+            case 5: this->OpenMenu();       break;
         }
+        if (!this->Data.player.isAlive())
+            this->PlayerDead();
     }
 }
 
@@ -117,26 +120,92 @@ void Game::init_new_game_data()
 void Game::LookAround()
 {
     vector<string> choices;
+    choices.push_back("Back");
     for (auto & action : Data.getCurrentLocation().avaliableActions)
         choices.push_back(action->get_type());
-    if (choices.size() == 0)
-        exit(1);
+
+    vector<shared_ptr<Action> > showObjects = Data.getCurrentLocation().avaliableActions;
+    showObjects.insert(showObjects.begin(), make_shared<Action>(Action()));
     Choicer choicer(choices);
-    Data.getCurrentLocation().avaliableActions[choicer.ask_for_choice(Data.getCurrentLocation().avaliableActions)]->Evoke(this->Data.player);
+    int chosen = choicer.ask_for_choice(showObjects);
+    if (chosen == 0)
+        return;
+    else
+    {
+        Data.getCurrentLocation().avaliableActions[chosen - 1]->Evoke(this->Data.player);
+        if (!Data.getCurrentLocation().avaliableActions[chosen - 1]->isRepeatable())
+            Data.getCurrentLocation().avaliableActions.erase(Data.getCurrentLocation().avaliableActions.begin() + chosen - 1);
+    }
 }
-void Game::Travel()
+void Game::OpenGear()
 {
-    
+    while (true)
+    {
+        vector<string> choices = {"Back", "Gear"};
+        Choicer choicer(choices);
+        vector<Player*> showObjects = {&this->Data.player, &this->Data.player};
+
+        switch (choicer.ask_for_choice(showObjects))
+        {
+            case 0: return;
+            case 1:
+            {
+                int lock = true;
+                while (lock)
+                {
+                    vector<string> choicesItems;
+                    choicesItems.push_back("Back");
+                    for (auto item : Data.player.get_equip())
+                        choicesItems.push_back(item->get_name());
+                    vector<shared_ptr<Item> > showObjects = Data.player.get_equip();
+                    showObjects.insert(showObjects.begin(), make_shared<Item>(Item()));
+                    Choicer choicerItems(choicesItems);
+                    int chosen = choicerItems.ask_for_choice(showObjects);
+                    if (chosen == 0)
+                        lock = false;
+                    else
+                        Data.player.itemManipulate(Data.player.get_equip()[chosen - 1]);
+                }
+            }
+        }
+    }
 }
 void Game::OpenInventory()
 {
-    
+    while (true)
+    {
+        vector<string> choices;
+        choices.push_back("Back");
+        for (auto item : Data.player.get_inventory())
+            choices.push_back(item->get_name());
+        vector<shared_ptr<Item> > showObjects = Data.player.get_inventory();
+        showObjects.insert(showObjects.begin(), make_shared<Item>(Item()));
+        Choicer choicer(choices);
+        int chosen = choicer.ask_for_choice(showObjects);
+        if (chosen == 0)
+            return;
+        else
+            Data.player.itemManipulate(Data.player.get_inventory()[chosen - 1]);
+    }
 }
-void Game::OpenMap() const
+void Game::OpenMap()
 {
-    
+    vector<string> text = {"This function is not available.", "Yet..."};
+    show_text(text);
 }
 void Game::OpenMenu()
 {
     this->playing = false;
+}
+void Game::SaveGame()
+{
+    vector<string> text = {"This function is not available.", "Yet..."};
+    show_text(text);
+}
+
+void Game::PlayerDead()
+{
+    vector<string> text = {"You way is ending right here. You ARE ...", "Dead... Better luck next tine."};
+    show_text(text);
+    playing = false;
 }

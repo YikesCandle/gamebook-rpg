@@ -8,17 +8,23 @@ Fight::Fight(const Enemy & enemy)
     this->enemy = enemy;
     this->type = "Fight";
 }
+
+bool Action::isRepeatable()
+{
+    return this->repeatable;
+}
 void Fight::Evoke(Player & player)
 {
     vector<string> startOfFightText = {this->enemy.startOfFight};
     show_text(startOfFightText);
     // fight
-    WINDOW *fightWindow = newwin(SCREEN_HEIGHT - 2, SCREEN_WIDTH - 2, 1, 1);
+    WINDOW *fightWindow = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
     wclear(fightWindow);
     wrefresh(fightWindow);
     int playerAbilityTime = 0, enemyAbilityTime = 0;
     Ability playerAbility, enemyAbility;
     vector<string> lines;
+    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
     while (player.actualHealth > 0 && enemy.actualHealth > 0)
     {
         if (playerAbilityTime == 0 && enemyAbilityTime == 0)
@@ -32,16 +38,16 @@ void Fight::Evoke(Player & player)
             char tmp[100];
             sprintf(tmp, "You are preparing an ability: %s (%d)", playerAbility.name.c_str(), playerAbility.timeNeeded);
             lines.push_back(string(tmp));
+            usleep(500000);
+            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+            
 
             enemyAbility = this->enemy.abilities[rand() % (int)this->enemy.abilities.size()];
             enemyAbilityTime += enemyAbility.timeNeeded;
             sprintf(tmp, "Enemy is preparing an ability: %s (%d)", enemyAbility.name.c_str(), enemyAbility.timeNeeded);
             lines.push_back(string(tmp));
-
-            for (size_t i = 0; i < lines.size(); ++i)
-                mvwprintw(fightWindow, i, 0, lines[i].c_str());
-            wrefresh(fightWindow);
-
+            usleep(500000);
+            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
             continue;
         }
         //player attack
@@ -54,6 +60,7 @@ void Fight::Evoke(Player & player)
             char tmp[100];
             sprintf(tmp, "(%d) You dealt %d damage.", playerAbilityTime, damage);
             lines.push_back(string(tmp));
+            usleep(500000);
             pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
             vector<string> choices;
 
@@ -68,6 +75,7 @@ void Fight::Evoke(Player & player)
 
             sprintf(tmp, "You are preparing an ability: %s (%d)", playerAbility.name.c_str(), playerAbilityTime);
             lines.push_back(string(tmp));
+            usleep(500000);
             pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
         }
         //enemy attack
@@ -80,6 +88,7 @@ void Fight::Evoke(Player & player)
             char tmp[100];
             sprintf(tmp, "(%d) Enemy dealt %d damage.", enemyAbilityTime, damage);
             lines.push_back(string(tmp));
+            usleep(500000);
             pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
 
             vector<string> choices;
@@ -87,10 +96,11 @@ void Fight::Evoke(Player & player)
             enemyAbilityTime += enemyAbility.timeNeeded;
             sprintf(tmp, "Enemy is preparing an ability: %s (%d)", enemyAbility.name.c_str(), enemyAbilityTime);
             lines.push_back(string(tmp));
+            usleep(500000);
             pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
         }
     }
-    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+    usleep(1500000);
     pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
     if (player.actualHealth <= 0)
     {
@@ -156,18 +166,18 @@ void Fight::closeInfo()
 
 void Fight::pausePrint(vector<string> & lines, WINDOW * fightWindow, int p1, int p2, int e1, int e2)
 {
-    usleep(500000);
     werase(fightWindow);
     if ((int)lines.size() >= SCREEN_HEIGHT - 3)
     lines.erase(lines.begin(), lines.begin() + (int)lines.size() - SCREEN_HEIGHT + 3 + 1);
     for (size_t i = 0; i < lines.size(); ++i)
-        mvwprintw(fightWindow, i, 0, lines[i].c_str());
+        mvwprintw(fightWindow, i + 1, 0 + 1, lines[i].c_str());
     
     char pHp[(SCREEN_WIDTH - 2) / 2] = {};
     char eHp[(SCREEN_WIDTH - 2) / 2] = {};
     sprintf(pHp, "You: %d/%d", p1, p2);
     sprintf(eHp, "Enemy: %d/%d", e1, e2);
-    mvwprintw(fightWindow, SCREEN_HEIGHT - 3, 0, pHp);
-    mvwprintw(fightWindow, SCREEN_HEIGHT - 3, SCREEN_WIDTH - 3 - strlen(eHp), eHp);
+    mvwprintw(fightWindow, SCREEN_HEIGHT - 3 + 1, 0 + 1, pHp);
+    mvwprintw(fightWindow, SCREEN_HEIGHT - 3 + 1, SCREEN_WIDTH - 3 - strlen(eHp) + 1, eHp);
+    box(fightWindow, 0, 0);
     wrefresh(fightWindow);
 }

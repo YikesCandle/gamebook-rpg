@@ -19,9 +19,11 @@ class Action
         std::string get_type();
         virtual void showInfo();
         virtual void closeInfo();
+        bool isRepeatable();
     protected:
         std::string type;
         int timeNeeded;
+        bool repeatable = false;
 };
 
 //-------------------------------------------

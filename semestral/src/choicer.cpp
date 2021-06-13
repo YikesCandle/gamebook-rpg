@@ -36,6 +36,7 @@ void Choicer::draw()
 {
     werase(window);
     box(this->window, 0, 0);
+    wrefresh(window);
     int first;
     int last;
     for (int i = (int)edges.size() - 1; i >= 0; --i)
@@ -65,7 +66,8 @@ int Choicer::ask_for_choice()
 {
     draw();
     bool enter    = false;
-    while (int key = getch())
+    flushinp();
+    while (int key = wgetch(window))
     {
         box(this->window, 0, 0);
         switch (key)

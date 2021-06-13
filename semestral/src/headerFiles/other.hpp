@@ -5,6 +5,8 @@
 #include <ncurses.h>
 #include <vector>
 #include <iostream>
+#include <memory>
+#include <algorithm>
 #include "choicer.hpp"
 
 static const int SCREEN_WIDTH = 66;
@@ -12,6 +14,8 @@ static const int SCREEN_HEIGHT = 18;
 
 struct Stats
 {
+    Stats() = default;
+    Stats(int h, int s, int d, int i);
     int health = 0;
     int strenght = 0;
     int defence = 0;
@@ -31,23 +35,35 @@ struct Ability
 class Item
 {
     public:
-    private:
+        virtual std::shared_ptr<Item> randomItem(int level, int id, int state);
+        std::string get_name();
+        int get_level();
+        int get_cost();
+        virtual void showInfo();
+        virtual void closeInfo();
+    protected:
+        std::string name;
         int level;
         int cost;
+        WINDOW * itemWindow;
 };
 class Equipable : public Item
 {
     public:
-
+        virtual std::shared_ptr<Item> randomItem(int level, int id, int state) override;
+        virtual void showInfo() override;
+        virtual void closeInfo() override;
     private:
         Stats stats;
         std::string type;
         std::vector<Ability> abilities;
+        int quality;
 };
 
 class Consumable : public Item
 {
     public:
+        virtual std::shared_ptr<Item> randomItem(int level, int id, int state) override;
     private:
         Stats stats;
 };
@@ -55,6 +71,8 @@ class Consumable : public Item
 class Inventory
 {
     public:
+        void add_item(std::shared_ptr<Item> item);
+        void delete_item(std::shared_ptr<Item> item);
     private:
         friend class Player;
         int size;

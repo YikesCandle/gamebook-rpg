@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <memory>
+#include <unistd.h>
 #include "enemy.hpp"
 #include "player.hpp"
 #include "other.hpp"
@@ -30,6 +31,7 @@ class Fight : public Action
         virtual ~Fight() = default;
         virtual void Evoke(Player & player) override;
     private:
+        void pausePrint(std::vector<std::string> & lines, WINDOW * fightWindow, int p1, int p2, int e1, int e2);
         Enemy enemy;
         bool attacking;
 };

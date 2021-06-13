@@ -29,9 +29,9 @@ void Game::Start()
         switch(select)
         {
             case 0:
+                this->init_new_game_data();
                 if (this->Create_character())
                     continue;
-                this->init_new_game_data();
                 this->Show_story();
             case 1:
                 this->Play();
@@ -93,10 +93,10 @@ int Game::Create_character()
             delete(characterWindow);
             return 1;
     }
+    this->Data.player.set_name(string(name));
     werase(characterWindow);
     wrefresh(characterWindow);
     delete(characterWindow);
-    this->Data.player.set_name(string(name));
     return 0;
 }
 void Game::Show_story() const
@@ -110,6 +110,7 @@ void Game::Load_data()
 }
 void Game::init_new_game_data()
 {
+    this->Data = GameData();
     this->Data.player.newGamePlayer();
     this->Data.map.newGameMap();
 }
@@ -135,7 +136,7 @@ void Game::OpenMap() const
 {
     
 }
-void Game::OpenMenu() const
+void Game::OpenMenu()
 {
-    
+    this->playing = false;
 }

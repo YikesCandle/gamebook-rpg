@@ -44,20 +44,8 @@ void Map::newGameMap()
             location.type = 3;
         }
     }
-    Enemy opp;
-    opp.stats.health = 20;
-    opp.actualHealth = 20;
-    opp.stats.strenght = 4;
-    opp.level = 2;
-    opp.startOfFight = "You were attacked by wolf! You cannot run. You must fight!";
-    opp.name = "wolf";
-    Ability ab;
-    ab.name = "whatever";
-    ab.intScale = 0;
-    ab.strengthScale = 3;
-    ab.timeNeeded = 2;
-    opp.abilities.push_back(ab);
-    this->map[0][0].avaliableActions.push_back(make_shared<Fight>(Fight(opp)));
+    for (int i = 0; i < 5; ++i)
+        this->map[0][0].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(1, i))));
 }
 
 std::vector<Ability> GameData::get_playerAbilities()

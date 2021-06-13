@@ -38,7 +38,7 @@ class Game
         void Travel();
         void OpenInventory();
         void OpenMap() const;
-        void OpenMenu() const;
+        void OpenMenu();
         //void EvokeAction(const Action & action);
 
         // DATA

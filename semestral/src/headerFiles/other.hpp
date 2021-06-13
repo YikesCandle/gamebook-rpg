@@ -7,6 +7,8 @@
 #include <iostream>
 #include <memory>
 #include <algorithm>
+#include <limits.h>
+#include <climits>
 #include "choicer.hpp"
 
 static const int SCREEN_WIDTH = 66;
@@ -73,8 +75,11 @@ class Consumable : public Item
 {
     public:
         virtual std::shared_ptr<Item> randomItem(int level, int id, int state) override;
+        virtual void showInfo() override;
+        virtual void closeInfo() override;
+        int get_health();
     private:
-        Stats stats;
+        int health;
 };
 
 class Inventory

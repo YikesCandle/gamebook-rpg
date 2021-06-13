@@ -88,7 +88,7 @@ Stats & Stats::operator -= (const Stats & s2)
 
 void Equipable::showInfo()
 {
-    char number[20] = {};
+    char number[40] = {};
     this->itemWindow = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
     werase(itemWindow);
     box(itemWindow, 0, 0);
@@ -158,7 +158,10 @@ void Inventory::add_item(std::shared_ptr<Item> item)
 }
 void Inventory::delete_item(std::shared_ptr<Item> item)
 {
-    this->items.erase(find(items.begin(), items.end(), item));
+    this->items.erase(find_if(items.begin(), items.end(), [item](std::shared_ptr<Item> & A) -> bool
+    {
+        return item->getID() == A->getID();
+    }));
 }
 
 Stats::Stats(int h, int s, int d, int i)
@@ -182,6 +185,83 @@ shared_ptr<Item> Item::randomItem(int level, int id, int state)
 {
     throw (exception());
 }
+
+void Consumable::showInfo()
+{
+    char number[40] = {};
+    this->itemWindow = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
+    werase(itemWindow);
+    box(itemWindow, 0, 0);
+    mvwprintw(itemWindow, 1, (SCREEN_WIDTH - 2) / 2 - 5, "-- Item --");
+    mvwprintw(itemWindow, 2, 1, "Name: ");
+    wprintw(itemWindow, this->name.c_str());
+    sprintf(number, " lvl %d", this->level);
+    mvwprintw(itemWindow, 4, 1, "This item can be used only once.");
+    mvwprintw(itemWindow, 6, 1, "Healing:");
+    sprintf(number, "\t%d", this->health);
+    wprintw(itemWindow, number);
+    wrefresh(itemWindow);
+}
+void Consumable::closeInfo()
+{
+    if (itemWindow == NULL)
+        return;
+    werase(this->itemWindow);
+    wrefresh(this->itemWindow);
+    delete(itemWindow);
+    itemWindow = NULL;
+}
+int Consumable::get_health()
+{
+    return this->health;
+}
+std::shared_ptr<Item> Consumable::randomItem(int level, int id, int state)
+{
+    switch(id)
+    {
+        case 0:
+        {
+            shared_ptr<Consumable> item = make_shared<Consumable>();
+            item->level = level;
+            item->name = "small heal potion";
+            item->ID = ITEM_ID++;
+            item->health = 5 * level;
+            item->cost = 2 * level;
+            return item;
+        }
+        case 1:
+        {
+            shared_ptr<Consumable> item = make_shared<Consumable>();
+            item->level = level;
+            item->name = "heal potion";
+            item->ID = ITEM_ID++;
+            item->health = 15 * level;
+            item->cost = 5 * level;
+            return item;
+        }
+        case 2:
+        {
+            shared_ptr<Consumable> item = make_shared<Consumable>();
+            item->level = level;
+            item->name = "big heal potion";
+            item->ID = ITEM_ID++;
+            item->health = 15 * level;
+            item->cost = 10 * level;
+            return item;
+        }
+        case 3:
+        {
+            shared_ptr<Consumable> item = make_shared<Consumable>();
+            item->level = level;
+            item->name = "full heal potion";
+            item->ID = ITEM_ID++;
+            item->health = INT_MAX / 2;
+            item->cost = 1000;
+            return item;
+        }
+    }
+}
+
 shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
 {
     switch(id)

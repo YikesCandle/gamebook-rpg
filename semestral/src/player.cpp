@@ -90,7 +90,34 @@ void Player::itemManipulate(shared_ptr<Item> & item)
             }
         }
         this->closeInfo();
+        return;
     }
+    Consumable * tmp2 = dynamic_cast<Consumable *>(&(*item));
+    if (tmp2 != nullptr)
+    {
+        item->showInfo();
+        vector<string> choices = {"Back", "Use"};
+        vector<shared_ptr<Item> > showObjects = {item, item};
+        Choicer choicer(choices);
+        switch (choicer.ask_for_choice(showObjects))
+        {
+            case 0: this->closeInfo(); return;
+            case 1:
+            {
+                this->inventory.delete_item(item);
+                this->actualHealth += tmp2->get_health();
+                if (actualHealth > stats.health)
+                    actualHealth = stats.health;
+                char sometext[50];
+                sprintf(sometext, "You used %s. Your health: %d/%d.", item->get_name().c_str(), actualHealth, stats.health);
+                vector<string> sometext2 = {string(sometext)};
+                show_text(sometext2);
+            }
+        }
+        this->closeInfo();
+        return;
+    }
+
 }
 
 void Player::newGamePlayer()
@@ -116,7 +143,11 @@ void Player::newGamePlayer()
     this->abilities.push_back(kick);
     this->alive = true;
     this->inventory.add_item(Equipable().randomItem(3, 2, 70));
+    this->inventory.add_item(Consumable().randomItem(2, 2, 90));
     this->inventory.add_item(Equipable().randomItem(3, 0, 70));
+    this->inventory.add_item(Consumable().randomItem(1, 1, 90));
+    this->inventory.add_item(Consumable().randomItem(1, 2, 90));
+    this->inventory.add_item(Consumable().randomItem(3, 3, 90));
 }
 
 void Player::add_experience(int exp)

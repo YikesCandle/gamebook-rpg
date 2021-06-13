@@ -6,7 +6,7 @@ CXXFLAGS=-std=c++17 -w
 
 all: gamebook
 
-gamebook: main.o game.o choicer.o player.o gamedata.o action.o other.o enemy.o
+gamebook: main.o game.o player.o gamedata.o action.o other.o enemy.o choicer.o
 	$(LD) $(CXXFLAGS) -o $@ $^ -lncurses
 
 %.o: src/%.cpp

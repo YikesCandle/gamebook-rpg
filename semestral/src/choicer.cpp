@@ -14,7 +14,7 @@ Choicer::Choicer(vector<string>  _choiceList)
     {
         this->edges.push_back(edge);
         int sumOfMenuWidth = 0;
-        for (int i = edge; i < (int)this->choiceList.size(); ++i)
+        for (int i = edge; i < (int)this->choiceList.size(); ++i)
         {
             if (sumOfMenuWidth + this->choiceList[i].length() + 2 > width - 2)
                 break;
@@ -61,29 +61,5 @@ void Choicer::draw()
         actualXPosition += choiceList[i].length() + 2;
     }
     wrefresh(window);
-}
-int Choicer::ask_for_choice()
-{
-    draw();
-    bool enter    = false;
-    flushinp();
-    while (int key = wgetch(window))
-    {
-        box(this->window, 0, 0);
-        switch (key)
-        {
-            case KEY_RIGHT:  select_next();      break;
-            case KEY_LEFT:   selct_previous();   break;
-            case 10:  enter    = true;    break;
-            default:;
-        }
-        draw();
-        if (enter)
-            break;
-    }
-    werase(this->window);
-    wrefresh(this->window);
-    delete(this->window);
-    return selected;
 }
 //----------------------------------------------------------------------

@@ -17,6 +17,8 @@ class Action
         virtual ~Action() = default;
         virtual void Evoke(Player & player);
         std::string get_type();
+        virtual void showInfo();
+        virtual void closeInfo();
     protected:
         std::string type;
         int timeNeeded;
@@ -30,6 +32,8 @@ class Fight : public Action
         Fight(const Enemy & enemy);
         virtual ~Fight() = default;
         virtual void Evoke(Player & player) override;
+        virtual void showInfo() override;
+        virtual void closeInfo() override;
     private:
         void pausePrint(std::vector<std::string> & lines, WINDOW * fightWindow, int p1, int p2, int e1, int e2);
         Enemy enemy;

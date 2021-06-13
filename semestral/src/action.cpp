@@ -32,13 +32,11 @@ void Fight::Evoke(Player & player)
             char tmp[100];
             sprintf(tmp, "You are preparing an ability: %s (%d)", playerAbility.name.c_str(), playerAbility.timeNeeded);
             lines.push_back(string(tmp));
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
 
             enemyAbility = this->enemy.abilities[rand() % (int)this->enemy.abilities.size()];
             enemyAbilityTime += enemyAbility.timeNeeded;
             sprintf(tmp, "Enemy is preparing an ability: %s (%d)", enemyAbility.name.c_str(), enemyAbility.timeNeeded);
             lines.push_back(string(tmp));
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
 
             for (size_t i = 0; i < lines.size(); ++i)
                 mvwprintw(fightWindow, i, 0, lines[i].c_str());
@@ -135,6 +133,25 @@ std::string Action::get_type()
 void Action::Evoke(Player & player)
 {
 
+}
+
+void Action::showInfo()
+{
+
+}
+
+void Action::closeInfo()
+{
+
+}
+
+void Fight::showInfo()
+{
+    this->enemy.showInfo();
+}
+void Fight::closeInfo()
+{
+    this->enemy.closeInfo();
 }
 
 void Fight::pausePrint(vector<string> & lines, WINDOW * fightWindow, int p1, int p2, int e1, int e2)

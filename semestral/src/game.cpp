@@ -122,7 +122,7 @@ void Game::LookAround()
     if (choices.size() == 0)
         exit(1);
     Choicer choicer(choices);
-    Data.getCurrentLocation().avaliableActions[choicer.ask_for_choice()]->Evoke(this->Data.player);
+    Data.getCurrentLocation().avaliableActions[choicer.ask_for_choice(Data.getCurrentLocation().avaliableActions)]->Evoke(this->Data.player);
 }
 void Game::Travel()
 {

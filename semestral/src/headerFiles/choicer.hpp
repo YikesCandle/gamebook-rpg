@@ -12,8 +12,10 @@ class Choicer
     public:
 
         Choicer(std::vector<std::string> _choiceList);
+        //Choicer(std::vector<std::string>, ToShow showItems);
 
-        int ask_for_choice();
+        template <class ToShow = std::shared_ptr<class Item> >
+        int ask_for_choice(std::vector<ToShow> showObjecs = std::vector<ToShow>());
 
     private:
 
@@ -28,8 +30,40 @@ class Choicer
         int x1; int y1;
         int x2; int y2;
         int selected;
+        bool showing = false;
         std::vector<int> edges;
         WINDOW *window;
 };
+
+template <typename ToShow>
+int Choicer::ask_for_choice(std::vector<ToShow> showObjecs)
+{
+    if (!showObjecs.empty())
+        showObjecs[this->selected]->showInfo();
+    draw();
+    bool enter    = false;
+    flushinp();
+    while (int key = wgetch(window))
+    {
+        if (!showObjecs.empty())
+            showObjecs[this->selected]->closeInfo();
+        switch (key)
+        {
+            case KEY_RIGHT:  select_next();      break;
+            case KEY_LEFT:   selct_previous();   break;
+            case 10:  enter    = true;    break;
+            default:;
+        }
+        if (enter)
+            break;
+        if (!showObjecs.empty())
+            showObjecs[this->selected]->showInfo();
+        draw();
+    }
+    werase(this->window);
+    wrefresh(this->window);
+    delete(this->window);
+    return selected;
+}
 
 #endif // CHOICER_H

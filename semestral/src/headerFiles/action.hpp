@@ -9,7 +9,6 @@
 #include "player.hpp"
 #include "other.hpp"
 
-
 class Action
 {
     public:
@@ -24,6 +23,22 @@ class Action
         std::string type;
         int timeNeeded;
         bool repeatable = false;
+};
+
+struct Location
+{
+    void showInfo();
+    void closeInfo();
+
+    std::string name;
+    int y;
+    int x;
+    int level;
+    bool visited;
+    std::string type;
+    std::vector<std::shared_ptr<Action> > avaliableActions;
+    std::vector<std::shared_ptr<Action> > travelAction;
+    WINDOW * locationWindow;
 };
 
 //-------------------------------------------
@@ -46,10 +61,13 @@ class Travel : public Action
 {
     public:
         virtual ~Travel() = default;
+        Travel() = default;
+        Travel(Location & location);
         virtual void Evoke(Player & player) override;
+        virtual void showInfo() override;
+        virtual void closeInfo() override;
     private:
-        int toX;
-        int toY;
+        Location location;
 
         
 };

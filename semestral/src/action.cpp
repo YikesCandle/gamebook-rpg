@@ -181,3 +181,65 @@ void Fight::pausePrint(vector<string> & lines, WINDOW * fightWindow, int p1, int
     box(fightWindow, 0, 0);
     wrefresh(fightWindow);
 }
+
+void Location::showInfo()
+{
+    
+    char number[40] = {};
+    this->locationWindow = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
+    werase(locationWindow);
+    box(locationWindow, 0, 0);
+    mvwprintw(locationWindow, 0, (SCREEN_WIDTH - 2) / 2 - 7, "-- Location --");
+    mvwprintw(locationWindow, 2, 1, "Type: ");
+    wprintw(locationWindow, this->type.c_str());
+    sprintf(number, " lvl %d", this->level);
+    wprintw(locationWindow, number);
+    mvwprintw(locationWindow, 4, 1, "Coords: ");
+    sprintf(number, "y: %d x: %d", this->y, this->x);
+    wprintw(locationWindow, number);
+    for (int i = 0; i < 16; ++i)
+    for (int j = 0; j < 16; ++j)
+    {
+        if (i == this->y && j == this->x)
+            mvwprintw(locationWindow, i + 1, j*2 + 25 , "O ");
+        else
+            mvwprintw(locationWindow, i + 1, j*2 + 25 , ". ");
+    }
+    wrefresh(locationWindow);
+}
+void Location::closeInfo()
+{
+    if (locationWindow == NULL)
+        return;
+    werase(locationWindow);
+    wrefresh(locationWindow);
+    delete(locationWindow);
+    locationWindow = NULL;
+}
+
+void Travel::Evoke(Player & player)
+{
+    if (rand() % 3 == 0)
+    {
+        Fight(Enemy().randomEnemy(this->location.level, rand() % 5)).Evoke(player);
+        if (!player.isAlive())
+            return;
+    }
+    vector<string> text = {"Travel to another location was successful!"};
+    show_text(text);
+    player.setCoords(this->location.y, this->location.x);
+}
+Travel::Travel(Location & local)
+{
+    this->repeatable = true;
+    this->type = "Travel";
+    this->location = local;
+}
+void Travel::showInfo()
+{
+    this->location.showInfo();
+}
+void Travel::closeInfo()
+{
+    this->location.closeInfo();
+}

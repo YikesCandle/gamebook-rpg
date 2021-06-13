@@ -61,6 +61,7 @@ void Game::Play()
         }
         if (!this->Data.player.isAlive())
             this->PlayerDead();
+        srand(time(nullptr));
     }
 }
 
@@ -132,9 +133,9 @@ void Game::LookAround()
         return;
     else
     {
-        Data.getCurrentLocation().avaliableActions[chosen - 1]->Evoke(this->Data.player);
         if (!Data.getCurrentLocation().avaliableActions[chosen - 1]->isRepeatable())
             Data.getCurrentLocation().avaliableActions.erase(Data.getCurrentLocation().avaliableActions.begin() + chosen - 1);
+        Data.getCurrentLocation().avaliableActions[chosen - 1]->Evoke(this->Data.player);
     }
 }
 void Game::OpenGear()
@@ -190,8 +191,11 @@ void Game::OpenInventory()
 }
 void Game::OpenMap()
 {
-    vector<string> text = {"This function is not available.", "Yet..."};
-    show_text(text);
+    vector<string> choices;
+    choices.push_back("Back");
+    vector<Location *> showObjects = {&Data.getCurrentLocation()};
+    Choicer choicer(choices);
+    int chosen = choicer.ask_for_choice(showObjects);
 }
 void Game::OpenMenu()
 {

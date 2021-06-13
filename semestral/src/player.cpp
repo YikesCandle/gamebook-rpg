@@ -120,6 +120,12 @@ void Player::itemManipulate(shared_ptr<Item> & item)
 
 }
 
+void Player::setCoords(int y, int x)
+{
+    this->actualPositionX = x;
+    this->actualPositionY = y;
+}
+
 void Player::newGamePlayer()
 {
     this->inventory.size = 5;

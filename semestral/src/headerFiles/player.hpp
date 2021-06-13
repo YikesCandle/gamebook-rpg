@@ -28,6 +28,7 @@ class Player
         void itemManipulate(std::shared_ptr<Item> & item);
         bool isItemEquiped(std::shared_ptr<Item> & item);
         bool isAlive();
+        void setCoords(int y, int x);
 
     private:
         friend class Fight;

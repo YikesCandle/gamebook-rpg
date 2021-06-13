@@ -55,6 +55,9 @@ void Enemy::closeInfo()
 
 Enemy Enemy::randomEnemy(int level, int id)
 {
+    std::shared_ptr<Item> potion1 = Consumable().randomItem(level, 0, 0);
+    std::shared_ptr<Item> potion2 = Consumable().randomItem(level, 1, 0);
+    std::shared_ptr<Item> potion3 = Consumable().randomItem(level, 2, 0);
     switch(id)
     {
         case 0:
@@ -84,6 +87,12 @@ Enemy Enemy::randomEnemy(int level, int id)
                 enemy.drops.push_back(drop2);
             if (rand() % 6 == 0)
                 enemy.drops.push_back(drop1);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion1);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion2);
+            if (rand() % 10 == 0)
+                enemy.drops.push_back(potion3);
             return enemy;
         }
         case 1:
@@ -116,6 +125,12 @@ Enemy Enemy::randomEnemy(int level, int id)
                 enemy.drops.push_back(drop1);
             if (rand() % 13 == 0)
                 enemy.drops.push_back(drop3);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion1);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion2);
+            if (rand() % 10 == 0)
+                enemy.drops.push_back(potion3);
             return enemy;
         }
         case 2:
@@ -145,6 +160,12 @@ Enemy Enemy::randomEnemy(int level, int id)
                 enemy.drops.push_back(drop1);
             if (rand() % 10 == 0)
                 enemy.drops.push_back(drop2);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion1);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion2);
+            if (rand() % 10 == 0)
+                enemy.drops.push_back(potion3);
             return enemy;
         }
         case 3:
@@ -177,6 +198,12 @@ Enemy Enemy::randomEnemy(int level, int id)
                 enemy.drops.push_back(drop2);
             if (rand() % 10 == 0)
                 enemy.drops.push_back(drop3);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion1);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion2);
+            if (rand() % 10 == 0)
+                enemy.drops.push_back(potion3);
             return enemy;
         }
         case 4:
@@ -209,6 +236,12 @@ Enemy Enemy::randomEnemy(int level, int id)
                 enemy.drops.push_back(drop2);
             if (rand() % 12 == 0)
                 enemy.drops.push_back(drop3);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion1);
+            if (rand() % 5 == 0)
+                enemy.drops.push_back(potion2);
+            if (rand() % 10 == 0)
+                enemy.drops.push_back(potion3);
             return enemy;
         }
     }

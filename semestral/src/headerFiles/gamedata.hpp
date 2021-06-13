@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <ncurses.h>
 #include "action.hpp"
 #include "other.hpp"
 #include "enemy.hpp"
@@ -16,16 +17,6 @@ class Time
     
     private:
         int time; // minutes
-};
-
-struct Location
-{
-    std::string name;
-    int level;
-    bool visited;
-    int type;
-    std::vector<std::shared_ptr<Action> > avaliableActions;
-    std::vector<std::shared_ptr<Action> > travelAction;
 };
 
 class Map

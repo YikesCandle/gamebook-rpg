@@ -33,7 +33,10 @@ void Game::Start()
                 if (this->Create_character())
                     continue;
                 this->Show_story();
+                this->Play();
+                break;
             case 1:
+                this->init_load_game_data();
                 this->Play();
                 break;
             case 2:
@@ -116,6 +119,22 @@ void Game::init_new_game_data()
 {
     this->Data = GameData();
     this->Data.player.newGamePlayer();
+    this->Data.map.newGameMap();
+}
+
+void Game::init_load_game_data()
+{
+    
+    this->Data = GameData();
+    ifstream dataFile("/Users/jiribednar/bednaji2/semestral/examples/dataFile.bin", ios::binary);
+    if (!dataFile.is_open())
+    {
+        vector<string> tmp = {"Load failed, new-game person was loaded."};
+        show_text(tmp);
+        this->Data.map.newGameMap();
+        return;
+    }
+    this->Data.player.read(dataFile);
     this->Data.map.newGameMap();
 }
 void Game::LookAround()
@@ -204,7 +223,15 @@ void Game::OpenMenu()
 }
 void Game::SaveGame()
 {
-    vector<string> text = {"This function is not available.", "Yet..."};
+    ofstream dataFile("/Users/jiribednar/bednaji2/semestral/examples/dataFile.bin", ios::binary);
+    if (!dataFile.is_open())
+    {
+        vector<string> text = {"Couldnt open file. Game is NOT saved."};
+        show_text(text);
+        return;
+    }
+    this->Data.player.write(dataFile);
+    vector<string> text = {"Save was successful."};
     show_text(text);
 }
 

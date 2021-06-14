@@ -58,11 +58,12 @@ void Player::itemManipulate(shared_ptr<Item> & item)
         while (true)
         {
             vector<string> choices = {"Back"};
-            vector<shared_ptr<Item> > showObjects = {item, item};
+            vector<shared_ptr<Item> > showObjects = {item, item, item};
             if (isItemEquiped(item))
                 choices.push_back("Unequip");
             else
                 choices.push_back("Equip");
+            choices.push_back("Drop");
             Choicer choicer(choices);
             switch (choicer.ask_for_choice(showObjects))
             {
@@ -86,6 +87,19 @@ void Player::itemManipulate(shared_ptr<Item> & item)
                             show_text(txt);
                         }
                     }
+                    break;
+                }
+                case 2:
+                {
+                    if (isItemEquiped(item))
+                    {
+                        vector<string> txt = {"You cannot drop equiped item."};
+                        show_text(txt);
+                        break;
+                    }
+                    this->inventory.delete_item(item);
+                    this->closeInfo();
+                    return;
                 }
             }
         }
@@ -96,8 +110,8 @@ void Player::itemManipulate(shared_ptr<Item> & item)
     if (tmp2 != nullptr)
     {
         item->showInfo();
-        vector<string> choices = {"Back", "Use"};
-        vector<shared_ptr<Item> > showObjects = {item, item};
+        vector<string> choices = {"Back", "Use", "Drop"};
+        vector<shared_ptr<Item> > showObjects = {item, item, item};
         Choicer choicer(choices);
         switch (choicer.ask_for_choice(showObjects))
         {
@@ -112,7 +126,9 @@ void Player::itemManipulate(shared_ptr<Item> & item)
                 sprintf(sometext, "You used %s. Your health: %d/%d.", item->get_name().c_str(), actualHealth, stats.health);
                 vector<string> sometext2 = {string(sometext)};
                 show_text(sometext2);
+                break;
             }
+            case 2: this->inventory.delete_item(item); break;
         }
         this->closeInfo();
         return;
@@ -235,4 +251,63 @@ void Player::closeInfo()
     wrefresh(infoWindow);
     delete(infoWindow);
     infoWindow = NULL;
+}
+
+int Player::read(ifstream & file)
+{
+    if (!file.is_open())
+        return 1;
+
+    stats.read(file);
+    file.read((char *) & actualHealth, sizeof(int));
+    file.read((char *) & level, sizeof(int));
+    file.read((char *) & alive, sizeof(bool));
+    file.read((char *) & experience, sizeof(int));
+    inventory.read(file);
+    size_t tmp;
+    file.read((char *) & tmp, sizeof(size_t));
+    for (size_t i = 0; i < tmp; ++i)
+    {
+        int typess;
+        file.read((char *) & typess, sizeof(int));
+        if (typess == 1)
+            equipedItems.push_back(Equipable().read(file));
+        else
+            equipedItems.push_back(Consumable().read(file));
+    }
+    file.read((char *) & tmp, sizeof(size_t));
+    for (size_t i = 0; i < tmp; ++i)
+        abilities.push_back(Ability().read(file));
+    char tmpname[21];
+    file.read((char *) & tmpname, sizeof(tmpname));
+    name = string(tmpname);
+    file.read((char *) & actualPositionX, sizeof(int));
+    file.read((char *) & actualPositionY, sizeof(int));
+    return 0;
+}
+int Player::write(ofstream & file)
+{
+    if (!file.is_open())
+        return 1;
+
+    stats.write(file);
+    file.write((char *) & actualHealth, sizeof(int));
+    file.write((char *) & level, sizeof(int));
+    file.write((char *) & alive, sizeof(bool));
+    file.write((char *) & experience, sizeof(int));
+    inventory.write(file);
+    size_t tmp = equipedItems.size();
+    file.write((char *) & tmp, sizeof(size_t));
+    for (size_t i = 0; i < tmp; ++i)
+        equipedItems[i]->write(file);
+    tmp = abilities.size();
+    file.write((char *) & tmp, sizeof(size_t));
+    for (size_t i = 0; i < tmp; ++i)
+        abilities[i].write(file);
+    char tmpname[21];
+    sprintf(tmpname, name.c_str());
+    file.write((char *) & tmpname, sizeof(tmpname));
+    file.write((char *) & actualPositionX, sizeof(int));
+    file.write((char *) & actualPositionY, sizeof(int));
+    return 0;
 }

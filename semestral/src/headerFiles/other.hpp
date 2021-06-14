@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <limits.h>
 #include <climits>
+#include <fstream>
 #include "choicer.hpp"
 
 static const int SCREEN_WIDTH = 66;
@@ -21,6 +22,9 @@ struct Stats
     Stats(int h, int s, int d, int i);
     Stats & operator += (const Stats & s2);
     Stats & operator -= (const Stats & s2);
+    int read(std::ifstream & file);
+    int write(std::ofstream & file);
+
     int health = 0;
     int strenght = 0;
     int defence = 0;
@@ -35,6 +39,9 @@ struct Ability
     int strengthScale;
     int intScale;
     int timeNeeded;
+
+    Ability read(std::ifstream & file);
+    void write(std::ofstream & file);
 };
 
 class Item
@@ -48,11 +55,15 @@ class Item
         virtual void showInfo();
         virtual void closeInfo();
         int getID() const;
+        virtual int getFileType();
+        virtual std::shared_ptr<Item> read(std::ifstream & file);
+        virtual void write(std::ofstream & file);
     protected:
         std::string name;
         int level;
         int cost;
         int ID;
+        int fileType;
         WINDOW * itemWindow;
 };
 class Equipable : public Item
@@ -64,6 +75,10 @@ class Equipable : public Item
         Stats & get_stats();
         std::vector<Ability> & get_abilities();
         virtual std::string get_type() override;
+        virtual int getFileType() override;
+
+        virtual std::shared_ptr<Item> read(std::ifstream & file) override;
+        virtual void write(std::ofstream & file) override;
     private:
         Stats stats;
         std::string type;
@@ -78,6 +93,10 @@ class Consumable : public Item
         virtual void showInfo() override;
         virtual void closeInfo() override;
         int get_health();
+        virtual int getFileType() override;
+
+        virtual std::shared_ptr<Item> read(std::ifstream & file) override;
+        virtual void write(std::ofstream & file) override;
     private:
         int health;
 };
@@ -87,6 +106,8 @@ class Inventory
     public:
         void add_item(std::shared_ptr<Item> item);
         void delete_item(std::shared_ptr<Item> item);
+        int read(std::ifstream & file);
+        int write(std::ofstream & file);
     private:
         friend class Player;
         int size;

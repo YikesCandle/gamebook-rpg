@@ -172,6 +172,134 @@ Stats::Stats(int h, int s, int d, int i)
     this->health = h;
 }
 
+int Stats::read(std::ifstream & file)
+{
+    file.read((char *) & defence, sizeof(int));
+    file.read((char *) & health, sizeof(int));
+    file.read((char *) & inteligence, sizeof(int));
+    file.read((char *) & strenght, sizeof(int));
+    return 0;
+}
+int Stats::write(std::ofstream & file)
+{
+    file.write((char *) & defence, sizeof(int));
+    file.write((char *) & health, sizeof(int));
+    file.write((char *) & inteligence, sizeof(int));
+    file.write((char *) & strenght, sizeof(int));
+    return 0;
+}
+
+int Inventory::read(std::ifstream & file)
+{
+    size_t tmp;
+    file.read((char *) & tmp, sizeof(int));
+    for (size_t i = 0; i < tmp; ++i)
+    {
+        int type;
+        file.read((char *) & type, sizeof(int));
+        if (type == 1)
+            items.push_back(Equipable().read(file));
+        else
+            items.push_back(Consumable().read(file));
+    }
+}
+int Inventory::write(std::ofstream & file)
+{
+    size_t tmp = items.size();
+    file.write((char *) & tmp, sizeof(int));
+    for (size_t i = 0; i < tmp; ++i)
+        items[i]->write(file);
+    return 0;
+}
+
+std::shared_ptr<Item> Item::read(std::ifstream & file)
+{
+    return make_shared<Item>(Item());
+}
+
+void Item::write(std::ofstream & file)
+{
+
+}
+
+std::shared_ptr<Item> Equipable::read(std::ifstream & file)
+{
+    file.read((char *) & this->ID, sizeof(int));
+    file.read((char *) & this->level, sizeof(int));
+    char tmp[21];
+    file.read((char *) & tmp, sizeof(tmp));
+    this->name = string(tmp);
+    file.read((char *) & this->quality, sizeof(int));
+    file.read((char *) & tmp, sizeof(tmp));
+    this->type = string(tmp);
+    this->stats.read(file);
+    size_t tmp2;
+    file.read((char *) & tmp2, sizeof(size_t));
+    for (size_t i = 0; i < tmp2; ++i)
+        this->abilities.push_back(Ability().read(file));
+    return make_shared<Equipable>(*this);
+}
+
+void Equipable::write(std::ofstream & file)
+{
+    int tmp3 = 1;
+    file.write((char *) & tmp3, sizeof(int));
+    file.write((char *) & this->ID, sizeof(int));
+    file.write((char *) & this->level, sizeof(int));
+    char tmp[21];
+    sprintf(tmp, this->name.c_str());
+    file.write((char *) & tmp, sizeof(tmp));
+    file.write((char *) & this->quality, sizeof(int));
+    sprintf(tmp, this->type.c_str());
+    file.write((char *) & tmp, sizeof(tmp));
+    this->stats.write(file);
+    size_t tmp2 = this->abilities.size();
+    file.write((char *) & tmp2, sizeof(size_t));
+    for (size_t i = 0; i < tmp2; ++i)
+        this->abilities[i].write(file);
+}
+std::shared_ptr<Item> Consumable::read(std::ifstream & file)
+{
+    file.read((char *) & this->ID, sizeof(int));
+    file.read((char *) & this->level, sizeof(int));
+    char tmp[21];
+    file.read((char *) & tmp, sizeof(tmp));
+    this->name = string(tmp);
+    file.read((char *) & this->health, sizeof(int));
+    return make_shared<Consumable>(*this);
+}
+void Consumable::write(std::ofstream & file)
+{
+    int tmp3 = 2;
+    file.write((char *) & tmp3, sizeof(int));
+    file.write((char *) & this->ID, sizeof(int));
+    file.write((char *) & this->level, sizeof(int));
+    char tmp[21];
+    sprintf(tmp, this->name.c_str());
+    file.write((char *) & tmp, sizeof(tmp));
+    file.write((char *) & this->health, sizeof(int));
+}
+
+Ability Ability::read(std::ifstream & file)
+{
+    file.read((char *) & this->timeNeeded, sizeof(int));
+    file.read((char *) & this->strengthScale, sizeof(int));
+    file.read((char *) & this->intScale, sizeof(int));
+    char tmp[21];
+    file.read((char *) & tmp, sizeof(tmp));
+    this->name = string(tmp);
+    return *this;
+}
+void Ability::write(std::ofstream & file)
+{
+    file.write((char *) & this->timeNeeded, sizeof(int));
+    file.write((char *) & this->strengthScale, sizeof(int));
+    file.write((char *) & this->intScale, sizeof(int));
+    char tmp[21];
+    sprintf(tmp, this->name.c_str());
+    file.write((char *) & tmp, sizeof(tmp));
+}
+
 std::string Item::get_type()
 {
     return string();
@@ -179,6 +307,19 @@ std::string Item::get_type()
 std::string Equipable::get_type()
 {
     return this->type;
+}
+
+int Item::getFileType()
+{
+    return 0;
+}
+int Equipable::getFileType()
+{
+    return 1;
+}
+int Consumable::getFileType()
+{
+    return 2;
 }
 
 shared_ptr<Item> Item::randomItem(int level, int id, int state)

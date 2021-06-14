@@ -29,6 +29,7 @@ class Game
         int Create_character();
         void Show_story() const;
         void init_new_game_data();
+        void init_load_game_data();
 
         // --- load game ---
         void Load_data();

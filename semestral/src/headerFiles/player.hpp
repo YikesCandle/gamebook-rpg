@@ -7,6 +7,7 @@
 #include <memory>
 #include <ncurses.h>
 #include <algorithm>
+#include <fstream>
 #include "other.hpp"
 
 
@@ -29,6 +30,9 @@ class Player
         bool isItemEquiped(std::shared_ptr<Item> & item);
         bool isAlive();
         void setCoords(int y, int x);
+
+        int read(std::ifstream & file);
+        int write(std::ofstream & file);
 
     private:
         friend class Fight;

@@ -1,0 +1,71 @@
+\hypertarget{class_item}{}\doxysection{Item Class Reference}
+\label{class_item}\index{Item@{Item}}
+Inheritance diagram for Item\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_item}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_item_aca64eb22f42dd101fc78c82b389370f7}\label{class_item_aca64eb22f42dd101fc78c82b389370f7}} 
+virtual std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ {\bfseries random\+Item} (int level, int id, int state)
+\item 
+\mbox{\Hypertarget{class_item_a2ba411f27235d4061d28569d59b74d41}\label{class_item_a2ba411f27235d4061d28569d59b74d41}} 
+std\+::string {\bfseries get\+\_\+name} ()
+\item 
+\mbox{\Hypertarget{class_item_a12372da542157b99d81f9a5066f48547}\label{class_item_a12372da542157b99d81f9a5066f48547}} 
+virtual std\+::string {\bfseries get\+\_\+type} ()
+\item 
+\mbox{\Hypertarget{class_item_a0dd71448bc7fb6cd45e9aebcea0fae67}\label{class_item_a0dd71448bc7fb6cd45e9aebcea0fae67}} 
+int {\bfseries get\+\_\+level} ()
+\item 
+\mbox{\Hypertarget{class_item_acadfaedf0921d6bf9b8b55f21637f9b2}\label{class_item_acadfaedf0921d6bf9b8b55f21637f9b2}} 
+int {\bfseries get\+\_\+cost} ()
+\item 
+\mbox{\Hypertarget{class_item_a1415ef49515d45ee18c7b0411f1c34ac}\label{class_item_a1415ef49515d45ee18c7b0411f1c34ac}} 
+virtual void {\bfseries show\+Info} ()
+\item 
+\mbox{\Hypertarget{class_item_ab194f1499a69b1ed7e8d1c301b8baa72}\label{class_item_ab194f1499a69b1ed7e8d1c301b8baa72}} 
+virtual void {\bfseries close\+Info} ()
+\item 
+\mbox{\Hypertarget{class_item_a74d03afecba6cd3771188849be2ae967}\label{class_item_a74d03afecba6cd3771188849be2ae967}} 
+int {\bfseries get\+ID} () const
+\item 
+\mbox{\Hypertarget{class_item_a4ae64039938fd19528320731b6bca6b9}\label{class_item_a4ae64039938fd19528320731b6bca6b9}} 
+virtual int {\bfseries get\+File\+Type} ()
+\item 
+\mbox{\Hypertarget{class_item_af604add15cfc5398f57763837080c3a3}\label{class_item_af604add15cfc5398f57763837080c3a3}} 
+virtual std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ {\bfseries read} (std\+::ifstream \&file)
+\item 
+\mbox{\Hypertarget{class_item_ab75d369267de35fa6ec49d9d207dc689}\label{class_item_ab75d369267de35fa6ec49d9d207dc689}} 
+virtual void {\bfseries write} (std\+::ofstream \&file)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_item_a342b7a351c9ae1c5430aa3ef65b670bd}\label{class_item_a342b7a351c9ae1c5430aa3ef65b670bd}} 
+std\+::string {\bfseries name}
+\item 
+\mbox{\Hypertarget{class_item_a147a4866d6b9b56d84765800c0f85a16}\label{class_item_a147a4866d6b9b56d84765800c0f85a16}} 
+int {\bfseries level}
+\item 
+\mbox{\Hypertarget{class_item_a3441c7ceb9925c12ccc504177f1cf06c}\label{class_item_a3441c7ceb9925c12ccc504177f1cf06c}} 
+int {\bfseries cost}
+\item 
+\mbox{\Hypertarget{class_item_a7367d5e88343ea58f022468bdc30b033}\label{class_item_a7367d5e88343ea58f022468bdc30b033}} 
+int {\bfseries ID}
+\item 
+\mbox{\Hypertarget{class_item_a2579d841325db9c5451439c0b877c7b1}\label{class_item_a2579d841325db9c5451439c0b877c7b1}} 
+int {\bfseries file\+Type}
+\item 
+\mbox{\Hypertarget{class_item_a8b8046373ff98a08cd19198c7614ee4d}\label{class_item_a8b8046373ff98a08cd19198c7614ee4d}} 
+WINDOW $\ast$ {\bfseries item\+Window}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+semestral/src/header\+Files/other.\+hpp\item 
+semestral/src/other.\+cpp\end{DoxyCompactItemize}

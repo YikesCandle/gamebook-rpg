@@ -1,0 +1,71 @@
+\hypertarget{class_player}{}\doxysection{Player Class Reference}
+\label{class_player}\index{Player@{Player}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_player_afca8141f38b60b526fd2f874523a2726}\label{class_player_afca8141f38b60b526fd2f874523a2726}} 
+std\+::string {\bfseries get\+\_\+name} ()
+\item 
+\mbox{\Hypertarget{class_player_a23198444a629ac8674f36f97c231487b}\label{class_player_a23198444a629ac8674f36f97c231487b}} 
+void {\bfseries set\+\_\+name} (const std\+::string \&player\+Name)
+\item 
+\mbox{\Hypertarget{class_player_a428d34acdc73b579d7e5065bdea4e399}\label{class_player_a428d34acdc73b579d7e5065bdea4e399}} 
+void {\bfseries new\+Game\+Player} ()
+\item 
+\mbox{\Hypertarget{class_player_a3703956f243d7ce718c26a1add64378e}\label{class_player_a3703956f243d7ce718c26a1add64378e}} 
+void {\bfseries add\+\_\+experience} (int exp)
+\item 
+\mbox{\Hypertarget{class_player_a3d2b0214c83b9cd41b465656d51711d4}\label{class_player_a3d2b0214c83b9cd41b465656d51711d4}} 
+std\+::vector$<$ \mbox{\hyperlink{struct_ability}{Ability}} $>$ {\bfseries get\+\_\+abilities} ()
+\item 
+\mbox{\Hypertarget{class_player_af8eff0f5b9769be581820a92310dfc83}\label{class_player_af8eff0f5b9769be581820a92310dfc83}} 
+void {\bfseries show\+Info} ()
+\item 
+\mbox{\Hypertarget{class_player_a484a054a66b937816b88820ea525376a}\label{class_player_a484a054a66b937816b88820ea525376a}} 
+void {\bfseries close\+Info} ()
+\item 
+\mbox{\Hypertarget{class_player_aef83474a41f63fde0c101a09ad3923b6}\label{class_player_aef83474a41f63fde0c101a09ad3923b6}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ $>$ \& {\bfseries get\+\_\+inventory} ()
+\item 
+\mbox{\Hypertarget{class_player_ac20ebf9cc4206c209d6dc9a76af0b2fc}\label{class_player_ac20ebf9cc4206c209d6dc9a76af0b2fc}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ $>$ \& {\bfseries get\+\_\+equip} ()
+\item 
+\mbox{\Hypertarget{class_player_abeda2b80bd639ed836a39f7bdf3f36b7}\label{class_player_abeda2b80bd639ed836a39f7bdf3f36b7}} 
+void {\bfseries add\+To\+Equip} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ \&item)
+\item 
+\mbox{\Hypertarget{class_player_a56757965031ec9b7e29b8644448f81c4}\label{class_player_a56757965031ec9b7e29b8644448f81c4}} 
+void {\bfseries remove\+From\+Equip} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ \&item)
+\item 
+\mbox{\Hypertarget{class_player_a56a54f249ab4e1c8ed454b18331e660e}\label{class_player_a56a54f249ab4e1c8ed454b18331e660e}} 
+void {\bfseries item\+Manipulate} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ \&item)
+\item 
+\mbox{\Hypertarget{class_player_a18097060fdfb18ef3ed8f4b18c4dffa4}\label{class_player_a18097060fdfb18ef3ed8f4b18c4dffa4}} 
+bool {\bfseries is\+Item\+Equiped} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_item}{Item}} $>$ \&item)
+\item 
+\mbox{\Hypertarget{class_player_a06e38c0f57e67eb006c9d09779bd8f8f}\label{class_player_a06e38c0f57e67eb006c9d09779bd8f8f}} 
+bool {\bfseries is\+Alive} ()
+\item 
+\mbox{\Hypertarget{class_player_a1b98bf9b7f7c676d5e7f7433e90b630f}\label{class_player_a1b98bf9b7f7c676d5e7f7433e90b630f}} 
+void {\bfseries set\+Coords} (int y, int x)
+\item 
+\mbox{\Hypertarget{class_player_acddebb112627dc974fcc13a87a5eb040}\label{class_player_acddebb112627dc974fcc13a87a5eb040}} 
+int {\bfseries read} (std\+::ifstream \&file)
+\item 
+\mbox{\Hypertarget{class_player_a46f0bfa3ded66d2da0ecb1c73008e7cf}\label{class_player_a46f0bfa3ded66d2da0ecb1c73008e7cf}} 
+int {\bfseries write} (std\+::ofstream \&file)
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_player_a790fbeb6f92a271feeb00d3f1d9b5286}\label{class_player_a790fbeb6f92a271feeb00d3f1d9b5286}} 
+class {\bfseries Fight}
+\item 
+\mbox{\Hypertarget{class_player_af4c6ac56fb3976b36bbb1b7faaa08f3a}\label{class_player_af4c6ac56fb3976b36bbb1b7faaa08f3a}} 
+class {\bfseries Game\+Data}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+semestral/src/header\+Files/player.\+hpp\item 
+semestral/src/player.\+cpp\end{DoxyCompactItemize}

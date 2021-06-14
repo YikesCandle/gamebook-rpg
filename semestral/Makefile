@@ -4,6 +4,12 @@ CXXFLAGS=-std=c++17 -Wall -pedantic
 
 all: gamebook
 
+compile: gamebook
+	rm -f *.o
+
+run: gamebook
+	./gamebook
+
 gamebook: main.o game.o player.o gamedata.o action.o other.o enemy.o choicer.o
 	$(LD) $(CXXFLAGS) -o $@ $^ -lncurses
 
@@ -15,5 +21,7 @@ clean:
 
 deps:
 	$(CXX) -MM src/*cpp > Makefile.d
+
+doc:
 
 -include Makefile.d

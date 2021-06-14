@@ -3,6 +3,10 @@
 
 using namespace std;
 
+const int SCREEN_WIDTH = 68;
+const int SCREEN_HEIGHT = 18;
+int ITEM_ID = 0;
+
 void show_text(std::vector<std::string> & text)
 {
     WINDOW *storyWindow = newwin(SCREEN_HEIGHT - 2, SCREEN_WIDTH - 2, 1, 1);

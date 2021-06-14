@@ -12,9 +12,9 @@
 #include <fstream>
 #include "choicer.hpp"
 
-static const int SCREEN_WIDTH = 66;
-static const int SCREEN_HEIGHT = 18;
-static int ITEM_ID;
+extern const int SCREEN_WIDTH;
+extern const int SCREEN_HEIGHT;
+extern int ITEM_ID;
 
 struct Stats
 {

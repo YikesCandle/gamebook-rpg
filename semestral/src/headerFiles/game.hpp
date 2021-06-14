@@ -5,6 +5,7 @@
 #include <ncurses.h>
 #include <vector>
 #include <random>
+#include <cstring>
 #include "gamedata.hpp"
 #include "action.hpp"
 #include "choicer.hpp"

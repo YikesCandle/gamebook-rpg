@@ -1,5 +1,3 @@
-#Zde bude funkcni Makefile.
-
 CXX=g++
 LD=g++
 CXXFLAGS=-std=c++17 -w

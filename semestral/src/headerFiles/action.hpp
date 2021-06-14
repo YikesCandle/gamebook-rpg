@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <unistd.h>
+#include <cmath>
 #include "enemy.hpp"
 #include "player.hpp"
 #include "other.hpp"

@@ -63,7 +63,7 @@ Enemy Enemy::randomEnemy(int level, int id)
         case 0:
         {
             Enemy enemy;
-            enemy.stats = Stats(10, 3, 1, 0);
+            enemy.stats = Stats(10 * level, 3 * level, 1 * level, 0);
             enemy.name = "wolf";
             enemy.level = level;
             enemy.experience = 10 * level;
@@ -98,7 +98,7 @@ Enemy Enemy::randomEnemy(int level, int id)
         case 1:
         {
             Enemy enemy;
-            enemy.stats = Stats(30, 2, 3, 1);
+            enemy.stats = Stats(30 * level, 2 * level, 3 * level, 1 * level);
             enemy.name = "Iron golem";
             enemy.level = level;
             enemy.experience = 30 * level;
@@ -136,7 +136,7 @@ Enemy Enemy::randomEnemy(int level, int id)
         case 2:
         {
             Enemy enemy;
-            enemy.stats = Stats(5, 1, 0, 2);
+            enemy.stats = Stats(5 * level, 1 * level, 0, 3 * level);
             enemy.name = "magic frog";
             enemy.level = level;
             enemy.experience = 8 * level;
@@ -171,7 +171,7 @@ Enemy Enemy::randomEnemy(int level, int id)
         case 3:
         {
             Enemy enemy;
-            enemy.stats = Stats(12, 3, 1, 1);
+            enemy.stats = Stats(12 * level, 3 * level, 1 * level, 1 * level);
             enemy.name = "peasant";
             enemy.level = level;
             enemy.experience = 12 * level;
@@ -209,7 +209,7 @@ Enemy Enemy::randomEnemy(int level, int id)
         case 4:
         {
             Enemy enemy;
-            enemy.stats = Stats(25, 4, 2, 1);
+            enemy.stats = Stats(25 * level, 4 * level, 2 * level, 1 * level);
             enemy.name = "bear";
             enemy.level = level;
             enemy.experience = 22 * level;

@@ -128,6 +128,7 @@ void Player::setCoords(int y, int x)
 
 void Player::newGamePlayer()
 {
+    this->experience = 0;
     this->inventory.size = 5;
     this->stats.health = 1000;
     this->actualHealth = 10;

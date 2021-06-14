@@ -100,7 +100,10 @@ void Fight::Evoke(Player & player)
             pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
         }
     }
-    usleep(1500000);
+    vector<string> menu = {"End"};
+    Choicer menubar(menu);
+    menubar.ask_for_choice();
+
     pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
     if (player.actualHealth <= 0)
     {
@@ -133,6 +136,23 @@ void Fight::Evoke(Player & player)
             player.inventory.add_item(drops[i]);
         }
         show_text(text);
+        double newLevel = (sqrt(2*(double)player.experience + 25) - 5) / 10.0;
+        int nl = newLevel + 1;
+
+        if (nl > player.level)
+        {
+            Stats addStats;
+            addStats.defence = nl - player.level;
+            addStats.strenght = nl - player.level;
+            addStats.health = (nl - player.level) * nl + 100;
+            addStats.inteligence = nl - player.level;
+            player.stats += addStats;
+            player.level = nl;
+            char tmptmp[100];
+            sprintf(tmptmp, "You leveled up! You stats went up. Your level: %d", nl);
+            vector<string> tmptmptmpt = {string(tmptmp)};
+            show_text(tmptmptmpt);
+        }
     }
 }
 

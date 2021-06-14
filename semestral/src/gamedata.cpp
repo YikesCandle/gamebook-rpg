@@ -31,29 +31,43 @@ void Map::newGameMap()
             case 3: location.type = "town"; break;
         }
         int distance = i + j;
-        if (distance < 5)
+        if (distance < 3)
         {
             location.level = 1;
         }
-        else if (distance < 120)
+        else if (distance < 16)
         {
-            location.level = rand() % 20 - 10 + distance / 4;
-            if (location.level < 2)
-                location.level = 3;
+            location.level = rand() % (distance) + distance - 2;
         }
-        else if (distance < 200)
+        else
         {
-            location.level = rand() % 20 - 10 + distance / 3;
+            location.level = rand() % (distance * 2) + distance;
         }
-        else if (distance < 250)
+        if (i == 0 && j == 0)
         {
-            location.level = 100;
+            for (int i = 0; i < 5; ++i)
+                this->map[0][0].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(1, i))));
         }
+        else
+        {
+            int fights = rand() % 6 + 2;
+            for (int f = 0; f < fights; ++f)
+                this->map[i][j].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(location.level, rand() % 5))));
+        }
+
     }
-    for (int i = 0; i < 5; ++i)
-        this->map[0][0].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(1, i))));
-    this->map[0][0].avaliableActions.push_back(make_shared<Travel>(Travel(this->map[1][0])));
-    this->map[0][0].avaliableActions.push_back(make_shared<Travel>(Travel(this->map[0][1])));
+    for (int i = 0; i < 16; ++i)
+    for (int j = 0; j < 16; ++j)
+    {
+        if (i != 0)
+            this->map[i][j].avaliableActions.push_back(make_shared<Travel>(Travel(this->map[i - 1][j])));
+        if (i != 15)
+            this->map[i][j].avaliableActions.push_back(make_shared<Travel>(Travel(this->map[i + 1][j])));
+        if (j != 0)
+            this->map[i][j].avaliableActions.push_back(make_shared<Travel>(Travel(this->map[i][j - 1])));
+        if (j != 15)
+            this->map[i][j].avaliableActions.push_back(make_shared<Travel>(Travel(this->map[i][j + 1])));
+    }
 }
 
 std::vector<Ability> GameData::get_playerAbilities()

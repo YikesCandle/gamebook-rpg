@@ -133,9 +133,10 @@ void Game::LookAround()
         return;
     else
     {
+        shared_ptr<Action> selected = Data.getCurrentLocation().avaliableActions[chosen - 1];
         if (!Data.getCurrentLocation().avaliableActions[chosen - 1]->isRepeatable())
             Data.getCurrentLocation().avaliableActions.erase(Data.getCurrentLocation().avaliableActions.begin() + chosen - 1);
-        Data.getCurrentLocation().avaliableActions[chosen - 1]->Evoke(this->Data.player);
+        selected->Evoke(this->Data.player);
     }
 }
 void Game::OpenGear()

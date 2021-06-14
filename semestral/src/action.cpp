@@ -192,8 +192,8 @@ void Fight::pausePrint(vector<string> & lines, WINDOW * fightWindow, int p1, int
     for (size_t i = 0; i < lines.size(); ++i)
         mvwprintw(fightWindow, i + 1, 0 + 1, lines[i].c_str());
     
-    char pHp[(SCREEN_WIDTH - 2) / 2] = {};
-    char eHp[(SCREEN_WIDTH - 2) / 2] = {};
+    char pHp[(68 - 2) / 2] = {};
+    char eHp[(68 - 2) / 2] = {};
     sprintf(pHp, "You: %d/%d", p1, p2);
     sprintf(eHp, "Enemy: %d/%d", e1, e2);
     mvwprintw(fightWindow, SCREEN_HEIGHT - 3 + 1, 0 + 1, pHp);

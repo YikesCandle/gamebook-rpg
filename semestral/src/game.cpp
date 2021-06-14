@@ -134,6 +134,7 @@ void Game::init_load_game_data()
         this->Data.map.newGameMap();
         return;
     }
+    dataFile.read((char *) & ITEM_ID, sizeof(int));
     this->Data.player.read(dataFile);
     this->Data.map.newGameMap();
 }
@@ -230,6 +231,7 @@ void Game::SaveGame()
         show_text(text);
         return;
     }
+    dataFile.write((char *) & ITEM_ID, sizeof(int));
     this->Data.player.write(dataFile);
     vector<string> text = {"Save was successful."};
     show_text(text);

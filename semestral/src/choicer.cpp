@@ -16,7 +16,7 @@ Choicer::Choicer(vector<string>  _choiceList)
         int sumOfMenuWidth = 0;
         for (int i = edge; i < (int)this->choiceList.size(); ++i)
         {
-            if (sumOfMenuWidth + this->choiceList[i].length() + 2 > width - 2)
+            if (sumOfMenuWidth + (int)this->choiceList[i].length() + 2 > width - 2)
                 break;
             sumOfMenuWidth += this->choiceList[i].length() + 2;
             edge = i;

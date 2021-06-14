@@ -55,7 +55,6 @@ class Fight : public Action
     private:
         void pausePrint(std::vector<std::string> & lines, WINDOW * fightWindow, int p1, int p2, int e1, int e2);
         Enemy enemy;
-        bool attacking;
 };
 
 class Travel : public Action
@@ -81,4 +80,4 @@ class Shop : public Action
     private:
 };
 
-#endif ACTION_H
+#endif //ACTION_H

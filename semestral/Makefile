@@ -1,6 +1,6 @@
 CXX=g++
 LD=g++
-CXXFLAGS=-std=c++17 -w
+CXXFLAGS=-std=c++17 -Wall -pedantic
 
 all: gamebook
 

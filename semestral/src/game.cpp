@@ -97,13 +97,13 @@ int Game::Create_character()
         case 1:
             werase(characterWindow);
             wrefresh(characterWindow);
-            delete(characterWindow);
+            delwin(characterWindow);
             return 1;
     }
     this->Data.player.set_name(string(name));
     werase(characterWindow);
     wrefresh(characterWindow);
-    delete(characterWindow);
+    delwin(characterWindow);
     return 0;
 }
 void Game::Show_story() const
@@ -216,7 +216,7 @@ void Game::OpenMap()
     choices.push_back("Back");
     vector<Location *> showObjects = {&Data.getCurrentLocation()};
     Choicer choicer(choices);
-    int chosen = choicer.ask_for_choice(showObjects);
+    choicer.ask_for_choice(showObjects);
 }
 void Game::OpenMenu()
 {

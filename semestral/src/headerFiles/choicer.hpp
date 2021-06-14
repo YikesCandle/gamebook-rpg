@@ -62,7 +62,7 @@ int Choicer::ask_for_choice(std::vector<ToShow> showObjecs)
     }
     werase(this->window);
     wrefresh(this->window);
-    delete(this->window);
+    delwin(this->window);
     return selected;
 }
 

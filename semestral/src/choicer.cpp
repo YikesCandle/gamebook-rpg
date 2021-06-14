@@ -37,8 +37,8 @@ void Choicer::draw()
     werase(window);
     box(this->window, 0, 0);
     wrefresh(window);
-    int first;
-    int last;
+    int first = 0;
+    int last = 0;
     for (int i = (int)edges.size() - 1; i >= 0; --i)
     {
         if (edges[i] <= selected)

@@ -249,7 +249,7 @@ void Player::closeInfo()
         return;
     werase(infoWindow);
     wrefresh(infoWindow);
-    delete(infoWindow);
+    delwin(infoWindow);
     infoWindow = NULL;
 }
 
@@ -305,7 +305,7 @@ int Player::write(ofstream & file)
     for (size_t i = 0; i < tmp; ++i)
         abilities[i].write(file);
     char tmpname[21];
-    sprintf(tmpname, name.c_str());
+    sprintf(tmpname, "%s", name.c_str());
     file.write((char *) & tmpname, sizeof(tmpname));
     file.write((char *) & actualPositionX, sizeof(int));
     file.write((char *) & actualPositionY, sizeof(int));

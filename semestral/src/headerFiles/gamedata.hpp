@@ -10,14 +10,14 @@
 #include "other.hpp"
 #include "enemy.hpp"
 
-class Time
-{
-    public:
-        // todo
-    
-    private:
-        int time; // minutes
-};
+//class Time
+//{
+//    public:
+//        // todo
+//    
+//    private:
+//        int time; // minutes
+//};
 
 class Map
 {
@@ -44,9 +44,9 @@ class GameData
     private:
         friend class Game;
         Player player;
-        Time time;
+        //Time time;
         Map map;
 };
 
 
-#endif GAMEDATA_H
+#endif // GAMEDATA_H

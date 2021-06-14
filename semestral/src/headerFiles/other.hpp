@@ -47,6 +47,7 @@ struct Ability
 class Item
 {
     public:
+        virtual ~Item() = default;
         virtual std::shared_ptr<Item> randomItem(int level, int id, int state);
         std::string get_name();
         virtual std::string get_type();
@@ -69,6 +70,7 @@ class Item
 class Equipable : public Item
 {
     public:
+        virtual ~Equipable() = default;
         virtual std::shared_ptr<Item> randomItem(int level, int id, int state) override;
         virtual void showInfo() override;
         virtual void closeInfo() override;
@@ -89,6 +91,7 @@ class Equipable : public Item
 class Consumable : public Item
 {
     public:
+        virtual ~Consumable() = default;
         virtual std::shared_ptr<Item> randomItem(int level, int id, int state) override;
         virtual void showInfo() override;
         virtual void closeInfo() override;

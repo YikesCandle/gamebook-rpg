@@ -109,7 +109,7 @@ void Fight::Evoke(Player & player)
     {
         werase(fightWindow);
         wrefresh(fightWindow);
-        delete(fightWindow);
+        delwin(fightWindow);
         vector<string> text = {"You lost the fight and were killed. RIP."};
         show_text(text);
         player.alive = false;
@@ -119,7 +119,7 @@ void Fight::Evoke(Player & player)
     {
         werase(fightWindow);
         wrefresh(fightWindow);
-        delete(fightWindow);
+        delwin(fightWindow);
 
         vector<string> text;
         text.push_back("Congratulations! You won the fight.");
@@ -233,7 +233,7 @@ void Location::closeInfo()
         return;
     werase(locationWindow);
     wrefresh(locationWindow);
-    delete(locationWindow);
+    delwin(locationWindow);
     locationWindow = NULL;
 }
 

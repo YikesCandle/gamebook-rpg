@@ -49,7 +49,7 @@ void Enemy::closeInfo()
         return;
     werase(infoWindow);
     wrefresh(infoWindow);
-    delete(infoWindow);
+    delwin(infoWindow);
     infoWindow = NULL;
 }
 
@@ -245,4 +245,5 @@ Enemy Enemy::randomEnemy(int level, int id)
             return enemy;
         }
     }
+    return Enemy();
 }

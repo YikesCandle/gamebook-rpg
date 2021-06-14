@@ -33,7 +33,7 @@ void show_text(std::vector<std::string> & text)
     }
     wclear(storyWindow);
     wrefresh(storyWindow);
-    delete(storyWindow);
+    delwin(storyWindow);
 }
 
 int Ability::calculateDmg(int level, const Stats & attacker, const Stats & deffender)
@@ -135,7 +135,7 @@ void Equipable::closeInfo()
         return;
     werase(this->itemWindow);
     wrefresh(this->itemWindow);
-    delete(itemWindow);
+    delwin(itemWindow);
     itemWindow = NULL;
 }
 
@@ -202,6 +202,7 @@ int Inventory::read(std::ifstream & file)
         else
             items.push_back(Consumable().read(file));
     }
+    return 0;
 }
 int Inventory::write(std::ofstream & file)
 {
@@ -247,10 +248,10 @@ void Equipable::write(std::ofstream & file)
     file.write((char *) & this->ID, sizeof(int));
     file.write((char *) & this->level, sizeof(int));
     char tmp[21];
-    sprintf(tmp, this->name.c_str());
+    sprintf(tmp, "%s", this->name.c_str());
     file.write((char *) & tmp, sizeof(tmp));
     file.write((char *) & this->quality, sizeof(int));
-    sprintf(tmp, this->type.c_str());
+    sprintf(tmp, "%s", this->type.c_str());
     file.write((char *) & tmp, sizeof(tmp));
     this->stats.write(file);
     size_t tmp2 = this->abilities.size();
@@ -275,7 +276,7 @@ void Consumable::write(std::ofstream & file)
     file.write((char *) & this->ID, sizeof(int));
     file.write((char *) & this->level, sizeof(int));
     char tmp[21];
-    sprintf(tmp, this->name.c_str());
+    sprintf(tmp, "%s", this->name.c_str());
     file.write((char *) & tmp, sizeof(tmp));
     file.write((char *) & this->health, sizeof(int));
 }
@@ -296,7 +297,7 @@ void Ability::write(std::ofstream & file)
     file.write((char *) & this->strengthScale, sizeof(int));
     file.write((char *) & this->intScale, sizeof(int));
     char tmp[21];
-    sprintf(tmp, this->name.c_str());
+    sprintf(tmp, "%s", this->name.c_str());
     file.write((char *) & tmp, sizeof(tmp));
 }
 
@@ -349,7 +350,7 @@ void Consumable::closeInfo()
         return;
     werase(this->itemWindow);
     wrefresh(this->itemWindow);
-    delete(itemWindow);
+    delwin(itemWindow);
     itemWindow = NULL;
 }
 int Consumable::get_health()
@@ -401,6 +402,7 @@ std::shared_ptr<Item> Consumable::randomItem(int level, int id, int state)
             return item;
         }
     }
+    return make_shared<Consumable>();
 }
 
 shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
@@ -769,4 +771,5 @@ shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
             return item;
         }
     }
+    return make_shared<Item>(Item());
 }

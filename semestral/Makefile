@@ -24,7 +24,6 @@ deps:
 	$(CXX) -MM src/*cpp > Makefile.d
 
 doc:
-	mkdir -p doc
 	doxygen doxyfile
 
 -include Makefile.d

@@ -118,12 +118,12 @@ void Player::itemManipulate(shared_ptr<Item> & item)
             case 0: this->closeInfo(); return;
             case 1:
             {
-                this->inventory.delete_item(item);
                 this->actualHealth += tmp2->get_health();
                 if (actualHealth > stats.health)
                     actualHealth = stats.health;
                 char sometext[50];
                 sprintf(sometext, "You used %s. Your health: %d/%d.", item->get_name().c_str(), actualHealth, stats.health);
+                this->inventory.delete_item(item);
                 vector<string> sometext2 = {string(sometext)};
                 show_text(sometext2);
                 break;
@@ -144,6 +144,7 @@ void Player::setCoords(int y, int x)
 
 void Player::newGamePlayer()
 {
+    this->name = "meloun";
     this->experience = 0;
     this->inventory.size = 5;
     this->stats.health = 1000;
@@ -166,11 +167,12 @@ void Player::newGamePlayer()
     this->abilities.push_back(kick);
     this->alive = true;
     this->inventory.add_item(Equipable().randomItem(3, 2, 70));
-    this->inventory.add_item(Consumable().randomItem(2, 2, 90));
+    this->inventory.add_item(Consumable().randomItem(3, 3, 90));
     this->inventory.add_item(Equipable().randomItem(3, 0, 70));
+    this->inventory.add_item(Equipable().randomItem(3, 6, 70));
     this->inventory.add_item(Consumable().randomItem(1, 1, 90));
     this->inventory.add_item(Consumable().randomItem(1, 2, 90));
-    this->inventory.add_item(Consumable().randomItem(3, 3, 90));
+    this->inventory.add_item(Consumable().randomItem(2, 2, 90));
 }
 
 void Player::add_experience(int exp)
@@ -266,23 +268,45 @@ int Player::read(ifstream & file)
     inventory.read(file);
     size_t tmp;
     file.read((char *) & tmp, sizeof(size_t));
+    if (!file)
+        return 1;
     for (size_t i = 0; i < tmp; ++i)
     {
         int typess;
         file.read((char *) & typess, sizeof(int));
-        if (typess == 1)
-            equipedItems.push_back(Equipable().read(file));
-        else
-            equipedItems.push_back(Consumable().read(file));
+        try
+        {
+            if (typess == 1)
+                equipedItems.push_back(Equipable().read(file));
+            else
+                equipedItems.push_back(Consumable().read(file));
+        }
+        catch(const std::exception& e)
+        {
+            return 1;
+        }
     }
     file.read((char *) & tmp, sizeof(size_t));
+    if (!file)
+        return 1;
     for (size_t i = 0; i < tmp; ++i)
-        abilities.push_back(Ability().read(file));
+    {
+        try
+        {
+            abilities.push_back(Ability().read(file));
+        }
+        catch (const std::exception & e)
+        {
+            return 1;
+        }
+    }
     char tmpname[21];
     file.read((char *) & tmpname, sizeof(tmpname));
     name = string(tmpname);
     file.read((char *) & actualPositionX, sizeof(int));
     file.read((char *) & actualPositionY, sizeof(int));
+    if (!file)
+        return 1;
     return 0;
 }
 int Player::write(ofstream & file)

@@ -5,7 +5,7 @@ CXXFLAGS=-std=c++17 -Wall -pedantic
 all: bednaji2
 
 compile: bednaji2
-	rm -f *.o
+	rm -f *.om
 
 run: bednaji2
 	./bednaji2
@@ -24,6 +24,8 @@ deps:
 	$(CXX) -MM src/*cpp > Makefile.d
 
 doc:
-	doxygen doxyfile
+	doxygen Doxyfile
+	mv html doc
+
 
 -include Makefile.d

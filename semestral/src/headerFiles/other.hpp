@@ -41,7 +41,7 @@ struct Ability
     int timeNeeded;
 
     Ability read(std::ifstream & file);
-    void write(std::ofstream & file);
+    int write(std::ofstream & file);
 };
 
 class Item
@@ -58,7 +58,7 @@ class Item
         int getID() const;
         virtual int getFileType();
         virtual std::shared_ptr<Item> read(std::ifstream & file);
-        virtual void write(std::ofstream & file);
+        virtual int write(std::ofstream & file);
     protected:
         std::string name;
         int level;
@@ -80,7 +80,7 @@ class Equipable : public Item
         virtual int getFileType() override;
 
         virtual std::shared_ptr<Item> read(std::ifstream & file) override;
-        virtual void write(std::ofstream & file) override;
+        virtual int write(std::ofstream & file) override;
     private:
         Stats stats;
         std::string type;
@@ -99,7 +99,7 @@ class Consumable : public Item
         virtual int getFileType() override;
 
         virtual std::shared_ptr<Item> read(std::ifstream & file) override;
-        virtual void write(std::ofstream & file) override;
+        virtual int write(std::ofstream & file) override;
     private:
         int health;
 };

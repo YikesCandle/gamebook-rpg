@@ -108,7 +108,14 @@ int Game::Create_character()
 }
 void Game::Show_story() const
 {
-    vector<string> story = {"This time, I was wondering if the cloud is enough for me. Do you understand?", "ale to nebylo tolik na to", "this is the end of the story enjoy"};
+    //vector<string> story = {"This time, I was wondering if the cloud is enough for me. Do you understand?", "ale to nebylo tolik na to", "this is the end of the story enjoy"};
+    vector<string> story = 
+    {"Outside, through the doorless timber frame, rain could be seen splattering against the muddy ground in the patches of moonlight that broke through the thick clouds above.",
+    "An ever-growing pool of water lay just beyond the building’s threshold, inching closer moment by moment. Crates and barrels were stacked high against the walls, with little room for anything else, or anyone.",
+    "In what space there was, hid Driev; crouched down and rooted to the spot. He dare not move, he dare not make a sound. Despite the rain lashing down outside, he feared that any noise or movement would alert his hunters.",
+    "The beasts were vicious and highly-skilled predators. If he was caught, he’d be torn apart and feasted upon. Their thick coats protected them from the harsh weather, and",
+    "their carnivorous mindset meant that, despite the conditions, Driev knew they’d still be out there, in the forest, seeking him out. The vast wilderness that spread out all around him seemed to be almost swarming with them.",
+    "His only hope was to sneak through and make it to the mountains, where they wouldn’t chase him."};
     show_text(story);
 }
 void Game::Load_data()
@@ -125,18 +132,25 @@ void Game::init_new_game_data()
 void Game::init_load_game_data()
 {
     
+    bool err = false;
     this->Data = GameData();
-    ifstream dataFile("/Users/jiribednar/bednaji2/semestral/examples/dataFile.bin", ios::binary);
+    ifstream dataFile("examples/dataFile.bin", ios::binary);
     if (!dataFile.is_open())
+        err = true;
+    dataFile.read((char *) & ITEM_ID, sizeof(int));
+    if (!dataFile)
+        err = true;
+    if (this->Data.player.read(dataFile))
+        err = true;
+    if (err)
     {
         vector<string> tmp = {"Load failed, new-game person was loaded."};
         show_text(tmp);
-        this->Data.map.newGameMap();
-        return;
+        this->Data.player = Player();
+        this->Data.player.newGamePlayer();
     }
-    dataFile.read((char *) & ITEM_ID, sizeof(int));
-    this->Data.player.read(dataFile);
     this->Data.map.newGameMap();
+    return;
 }
 void Game::LookAround()
 {
@@ -224,7 +238,7 @@ void Game::OpenMenu()
 }
 void Game::SaveGame()
 {
-    ofstream dataFile("/Users/jiribednar/bednaji2/semestral/examples/dataFile.bin", ios::binary);
+    ofstream dataFile("examples/dataFile.bin", ios::binary);
     if (!dataFile.is_open())
     {
         vector<string> text = {"Couldnt open file. Game is NOT saved."};

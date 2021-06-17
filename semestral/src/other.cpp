@@ -178,14 +178,20 @@ Stats::Stats(int h, int s, int d, int i)
 
 int Stats::read(std::ifstream & file)
 {
+    if (!file.is_open())
+        return 1;
     file.read((char *) & defence, sizeof(int));
     file.read((char *) & health, sizeof(int));
     file.read((char *) & inteligence, sizeof(int));
     file.read((char *) & strenght, sizeof(int));
+    if (!file)
+        return 1;
     return 0;
 }
 int Stats::write(std::ofstream & file)
 {
+    if (!file.is_open())
+        return 1;
     file.write((char *) & defence, sizeof(int));
     file.write((char *) & health, sizeof(int));
     file.write((char *) & inteligence, sizeof(int));
@@ -195,21 +201,36 @@ int Stats::write(std::ofstream & file)
 
 int Inventory::read(std::ifstream & file)
 {
+    if (!file.is_open())
+        return 1;
     size_t tmp;
     file.read((char *) & tmp, sizeof(int));
+    if (!file)
+        return 1;
     for (size_t i = 0; i < tmp; ++i)
     {
         int type;
         file.read((char *) & type, sizeof(int));
-        if (type == 1)
-            items.push_back(Equipable().read(file));
-        else
-            items.push_back(Consumable().read(file));
+        try
+        {
+            if (type == 1)
+                items.push_back(Equipable().read(file));
+            else
+                items.push_back(Consumable().read(file));
+        }
+        catch (const std::exception &e)
+        {
+            return 1;
+        }
     }
+    if (!file)
+        return 1;
     return 0;
 }
 int Inventory::write(std::ofstream & file)
 {
+    if (!file.is_open())
+        return 1;
     size_t tmp = items.size();
     file.write((char *) & tmp, sizeof(int));
     for (size_t i = 0; i < tmp; ++i)
@@ -222,13 +243,15 @@ std::shared_ptr<Item> Item::read(std::ifstream & file)
     return make_shared<Item>(Item());
 }
 
-void Item::write(std::ofstream & file)
+int Item::write(std::ofstream & file)
 {
 
 }
 
 std::shared_ptr<Item> Equipable::read(std::ifstream & file)
 {
+    if (!file.is_open())
+        throw std::runtime_error("Error occured while loading equipable item. - could not open file");
     file.read((char *) & this->ID, sizeof(int));
     file.read((char *) & this->level, sizeof(int));
     char tmp[21];
@@ -237,16 +260,23 @@ std::shared_ptr<Item> Equipable::read(std::ifstream & file)
     file.read((char *) & this->quality, sizeof(int));
     file.read((char *) & tmp, sizeof(tmp));
     this->type = string(tmp);
-    this->stats.read(file);
+    if (this->stats.read(file))
+        throw std::runtime_error("Error occured while loading equipable item. - bad input");
     size_t tmp2;
     file.read((char *) & tmp2, sizeof(size_t));
+    if (!file)
+        throw std::runtime_error("Error occured while loading equipable item. - reading from file");
     for (size_t i = 0; i < tmp2; ++i)
         this->abilities.push_back(Ability().read(file));
+    if (!file)
+        throw std::runtime_error("Error occured while loading equipable item. - reading from file");
     return make_shared<Equipable>(*this);
 }
 
-void Equipable::write(std::ofstream & file)
+int Equipable::write(std::ofstream & file)
 {
+    if (!file.is_open())
+        return 1;
     int tmp3 = 1;
     file.write((char *) & tmp3, sizeof(int));
     file.write((char *) & this->ID, sizeof(int));
@@ -262,19 +292,26 @@ void Equipable::write(std::ofstream & file)
     file.write((char *) & tmp2, sizeof(size_t));
     for (size_t i = 0; i < tmp2; ++i)
         this->abilities[i].write(file);
+    return 0;
 }
 std::shared_ptr<Item> Consumable::read(std::ifstream & file)
 {
+    if (!file.is_open())
+        throw std::runtime_error("Error occured while loading consumable item. - could not open file");
     file.read((char *) & this->ID, sizeof(int));
     file.read((char *) & this->level, sizeof(int));
     char tmp[21];
     file.read((char *) & tmp, sizeof(tmp));
     this->name = string(tmp);
     file.read((char *) & this->health, sizeof(int));
+    if (!file)
+        throw std::runtime_error("Error occured while loading consumable item. - reading");
     return make_shared<Consumable>(*this);
 }
-void Consumable::write(std::ofstream & file)
+int Consumable::write(std::ofstream & file)
 {
+    if (!file.is_open())
+        return 1;
     int tmp3 = 2;
     file.write((char *) & tmp3, sizeof(int));
     file.write((char *) & this->ID, sizeof(int));
@@ -283,26 +320,34 @@ void Consumable::write(std::ofstream & file)
     sprintf(tmp, "%s", this->name.c_str());
     file.write((char *) & tmp, sizeof(tmp));
     file.write((char *) & this->health, sizeof(int));
+    return 0;
 }
 
 Ability Ability::read(std::ifstream & file)
 {
+    if (!file.is_open())
+        throw std::runtime_error("Error occured while loading Ability. - could not open file");
     file.read((char *) & this->timeNeeded, sizeof(int));
     file.read((char *) & this->strengthScale, sizeof(int));
     file.read((char *) & this->intScale, sizeof(int));
     char tmp[21];
     file.read((char *) & tmp, sizeof(tmp));
     this->name = string(tmp);
+    if (!file)
+        throw std::runtime_error("Error occured while loading Ability. - bad input");
     return *this;
 }
-void Ability::write(std::ofstream & file)
+int Ability::write(std::ofstream & file)
 {
+    if (!file.is_open())
+        return 1;
     file.write((char *) & this->timeNeeded, sizeof(int));
     file.write((char *) & this->strengthScale, sizeof(int));
     file.write((char *) & this->intScale, sizeof(int));
     char tmp[21];
     sprintf(tmp, "%s", this->name.c_str());
     file.write((char *) & tmp, sizeof(tmp));
+    return 0;
 }
 
 std::string Item::get_type()

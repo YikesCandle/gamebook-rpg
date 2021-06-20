@@ -11,15 +11,20 @@
 #include "player.hpp"
 #include "other.hpp"
 
+// every action can be inserted into location and be evoked
 class Action
 {
     public:
         Action() = default;
         virtual ~Action() = default;
+        // starts the action process
         virtual void Evoke(Player & player);
         std::string get_type();
+        // show info about current action, creates independent ncurses window
         virtual void showInfo();
+        // closes ncurses window opened by showInfo
         virtual void closeInfo();
+        // returns true, if IS repeatable, if action is repeatable then doesn't vanish after evoking
         bool isRepeatable();
     protected:
         std::string type;
@@ -27,9 +32,12 @@ class Action
         bool repeatable = false;
 };
 
+// contains avaliable Actions
 struct Location
 {
+    // show info about current location, creates independent ncurses window
     void showInfo();
+    // closes ncurses window opened by showInfo
     void closeInfo();
 
     std::string name;
@@ -44,16 +52,20 @@ struct Location
 };
 
 //-------------------------------------------
-
+// Fight action, simulates fighting between player and enemy
 class Fight : public Action
 {
     public:
         Fight(const Enemy & enemy);
         virtual ~Fight() = default;
+        // starts the fighting simulation
         virtual void Evoke(Player & player) override;
+        // show info about current *Enemy*, creates independent ncurses window
         virtual void showInfo() override;
+        // closes ncurses window opened by showInfo
         virtual void closeInfo() override;
     private:
+        // prints the current state of the fight
         void pausePrint(std::vector<std::string> & lines, WINDOW * fightWindow, int p1, int p2, int e1, int e2);
         Enemy enemy;
 };

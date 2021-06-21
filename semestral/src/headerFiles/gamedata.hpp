@@ -22,23 +22,23 @@
 //};
 
 
-// Game map, contains actual statue of the game, locations
+//! Game map, contains actual statue of the game, locations
 class Map
 {
     public:
         Map();
-        // does nothing
+        //! does nothing
         void showMap();
-        // generates new Map - should be called before starting new game
+        //! generates new Map - should be called before starting new game
         void newGameMap();
     private:
         friend class Game;
         friend class GameData;
-        // map is just 2D map of Locations, Locations contain actions
+        //! map is just 2D map of Locations, Locations contain actions
         std::vector<std::vector<Location> > map;
 };
 
-// contains game Map and Player data
+//! contains game Map and Player data
 class GameData
 {
     public:
@@ -48,15 +48,15 @@ class GameData
 
         std::vector<Ability> get_playerAbilities();
         void set_playerAbilities(const std::vector<Ability> & ab);
-        // return reference to a player Location
+        //! return reference to a player Location
         Location & getCurrentLocation();
-        // data manipulation
+        //! data manipulation
     private:
         friend class Game;
         Player player;
-        //Time time;
+        //!Time time;
         Map map;
 };
 
 
-#endif // GAMEDATA_H
+#endif //! GAMEDATA_H

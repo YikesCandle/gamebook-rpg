@@ -245,7 +245,7 @@ std::shared_ptr<Item> Item::read(std::ifstream & file)
 
 int Item::write(std::ofstream & file)
 {
-
+    return 0;
 }
 
 std::shared_ptr<Item> Equipable::read(std::ifstream & file)

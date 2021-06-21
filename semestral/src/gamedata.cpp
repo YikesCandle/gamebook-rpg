@@ -13,7 +13,7 @@ void Map::showMap()
 
 }
 
-void Map::newGameMap()
+int Map::newGameMap()
 {
     srand(time(nullptr));
     for (int i = 0; i < 16; ++i)
@@ -45,16 +45,31 @@ void Map::newGameMap()
         }
         if (i == 0 && j == 0)
         {
-            for (int i = 0; i < 5; ++i)
-                this->map[0][0].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(1, i))));
+            try
+            {
+                for (int i = 0; i < 5; ++i)
+                    this->map[0][0].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(1, i))));
+            }
+            catch (const exception & e)
+            {
+                std::cerr << e.what() << '\n';
+                return 1;
+            }
         }
         else
         {
             int fights = rand() % 6 + 2;
-            for (int f = 0; f < fights; ++f)
-                this->map[i][j].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(location.level, rand() % 5))));
+            try
+            {
+                for (int f = 0; f < fights; ++f)
+                    this->map[i][j].avaliableActions.push_back(make_shared<Fight>(Fight(Enemy().randomEnemy(location.level, rand() % 5))));
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                return 1;
+            }
         }
-
     }
     for (int i = 0; i < 16; ++i)
     for (int j = 0; j < 16; ++j)
@@ -68,6 +83,7 @@ void Map::newGameMap()
         if (j != 15)
             this->map[i][j].avaliableActions.push_back(make_shared<Travel>(Travel(this->map[i][j + 1])));
     }
+    return 0;
 }
 
 std::vector<Ability> GameData::get_playerAbilities()

@@ -1,0 +1,79 @@
+ENEMY_ID: 0
+
+    STATS: 10 3 1 0
+    NAME: Wolf
+
+    ABILITIES: 2
+    ABILITY_NAME: claw_attack
+    ABILITY_DATA: 0 5 4
+
+    ABILITY_NAME: bite
+    ABILITY_DATA: 0 3 2
+
+    DROPS: 2
+    ITEM: 6 6
+    ITEM: 8 6
+ENEMY_ID: 1
+
+    STATS: 30 2 3 1
+    NAME: Iron_golem
+
+    ABILITIES: 2
+    ABILITY_NAME: stomp
+    ABILITY_DATA: 0 7 10
+
+    ABILITY_NAME: punch
+    ABILITY_DATA: 0 2 5
+
+    DROPS: 3
+    ITEM: 5 5
+    ITEM: 7 10
+    ITEM: 2 13
+ENEMY_ID: 2
+
+    STATS: 5 1 0 3
+    NAME: magic_frog
+
+    ABILITIES: 2
+    ABILITY_NAME: tongue_shot
+    ABILITY_DATA: 0 1 1
+
+    ABILITY_NAME: water_magic
+    ABILITY_DATA: 4 0 4
+
+    DROPS: 2
+    ITEM: 3 15
+    ITEM: 4 10
+ENEMY_ID: 3
+
+    STATS: 12 3 1 1
+    NAME: peasant
+
+    ABILITIES: 2
+    ABILITY_NAME: punch
+    ABILITY_DATA: 0 3 3
+
+    ABILITY_NAME: pitchfork_attack
+    ABILITY_DATA: 0 3 6
+
+    DROPS: 3
+    ITEM: 0 10
+    ITEM: 1 10
+    ITEM: 9 10
+ENEMY_ID: 4
+
+    STATS: 25 4 2 1
+    NAME: Bear
+
+    ABILITIES: 2
+    ABILITY_NAME: claw_attack
+    ABILITY_DATA: 0 6 7
+
+    ABILITY_NAME: roar_wave
+    ABILITY_DATA: 2 3 4
+
+    DROPS: 3
+    ITEM: 4 12
+    ITEM: 5 12
+    ITEM: 6 12
+

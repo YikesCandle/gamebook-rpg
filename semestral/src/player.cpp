@@ -142,7 +142,7 @@ void Player::setCoords(int y, int x)
     this->actualPositionY = y;
 }
 
-void Player::newGamePlayer()
+int Player::newGamePlayer()
 {
     this->name = "meloun";
     this->experience = 0;
@@ -166,13 +166,23 @@ void Player::newGamePlayer()
     kick.intScale = 0;
     this->abilities.push_back(kick);
     this->alive = true;
-    this->inventory.add_item(Equipable().randomItem(3, 2, 70));
-    this->inventory.add_item(Consumable().randomItem(3, 3, 90));
-    this->inventory.add_item(Equipable().randomItem(3, 0, 70));
-    this->inventory.add_item(Equipable().randomItem(3, 6, 70));
-    this->inventory.add_item(Consumable().randomItem(1, 1, 90));
-    this->inventory.add_item(Consumable().randomItem(1, 2, 90));
-    this->inventory.add_item(Consumable().randomItem(2, 2, 90));
+    try
+    {
+        this->inventory.add_item(Equipable().randomItem(3, 2, 70));
+        this->inventory.add_item(Consumable().randomItem(3, 3, 90));
+        this->inventory.add_item(Equipable().randomItem(3, 0, 70));
+        this->inventory.add_item(Equipable().randomItem(3, 6, 70));
+        this->inventory.add_item(Consumable().randomItem(1, 1, 90));
+        this->inventory.add_item(Consumable().randomItem(1, 2, 90));
+        this->inventory.add_item(Consumable().randomItem(2, 2, 90));
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return 1;
+    }
+    return 0;
+    
 }
 
 void Player::add_experience(int exp)
@@ -283,6 +293,7 @@ int Player::read(ifstream & file)
         }
         catch(const std::exception& e)
         {
+            std::cerr << e.what() << '\n';
             return 1;
         }
     }
@@ -297,6 +308,7 @@ int Player::read(ifstream & file)
         }
         catch (const std::exception & e)
         {
+            std::cerr << e.what() << '\n';
             return 1;
         }
     }

@@ -7,6 +7,9 @@
 #include <ncurses.h>
 #include <map>
 #include <memory>
+#include <fstream>
+#include <cstring>
+#include <sstream>
 #include "other.hpp"
 
 struct Enemy
@@ -32,6 +35,7 @@ struct Enemy
         std::vector<std::shared_ptr<Item> > drops;
         //! abilities that enemy can use
         std::vector<Ability> abilities;
+
         WINDOW *infoWindow;
 };
 

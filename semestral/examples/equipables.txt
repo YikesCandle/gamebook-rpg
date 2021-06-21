@@ -1,0 +1,78 @@
+ITEM_ID: 0
+    TYPE: weapon
+    NAME: basic_dagger
+    STATS: 0 1 0 0
+
+    ABILITIES: 2
+    ABILITY_NAME: quick_cut
+    ABILITY_DATA: 0 2 2
+
+    ABILITY_NAME: heavy_cut
+    ABILITY_DATA: 0 4 5
+ITEM_ID: 1
+    TYPE: weapon
+    NAME: basic_sword
+    STATS: 0 2 0 0
+
+    ABILITIES: 2
+    ABILITY_NAME: fast_lunge
+    ABILITY_DATA: 0 3 3
+
+    ABILITY_NAME: heavy_sword_attack
+    ABILITY_DATA: 0 7 7
+ITEM_ID: 2
+    TYPE: weapon
+    NAME: hammer
+    STATS: 0 5 0 0
+
+    ABILITIES: 1
+    ABILITY_NAME: smash
+    ABILITY_DATA: 0 6 10
+ITEM_ID: 3
+    TYPE: weapon
+    NAME: magic_stick
+    STATS: 0 1 0 2
+
+    ABILITIES: 2
+    ABILITY_NAME: fireball
+    ABILITY_DATA: 5 0 4
+
+    ABILITY_NAME: supernova
+    ABILITY_DATA: 20 0 15
+ITEM_ID: 4
+    TYPE: armor
+    NAME: leather_armor
+    STATS: 20 1 1 2
+
+    ABILITIES: 0
+ITEM_ID: 5
+    TYPE: armor
+    NAME: plate_armor
+    STATS: 40 2 2 0
+
+    ABILITIES: 0
+ITEM_ID: 6
+    TYPE: helmet
+    NAME: leather_helmet
+    STATS: 5 0 1 3
+
+    ABILITIES: 0
+ITEM_ID: 7
+    TYPE: helmet
+    NAME: plate_helmet
+    STATS: 10 3 1 0
+
+    ABILITIES: 0
+ITEM_ID: 8
+    TYPE: boots
+    NAME: leather_boots
+    STATS: 5 1 1 2
+
+    ABILITIES: 0
+ITEM_ID: 9
+    TYPE: boots
+    NAME: plate_boots
+    STATS: 9 2 2 0
+
+    ABILITIES: 0
+

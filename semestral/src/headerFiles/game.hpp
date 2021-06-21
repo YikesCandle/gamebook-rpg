@@ -43,10 +43,10 @@ class Game
         void Show_story() const;
 
         //! generates game.data (map, player), normally called after Game::Create_character method
-        void init_new_game_data();
+        int init_new_game_data();
 
         //! same as Game::init_new_game_data method, but Player is loaded from file
-        void init_load_game_data();
+        int init_load_game_data();
 
         //! --- load game ---
 

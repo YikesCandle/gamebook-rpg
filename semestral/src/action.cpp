@@ -62,7 +62,7 @@ void Fight::Evoke(Player & player)
         werase(fightWindow);
         wrefresh(fightWindow);
         delwin(fightWindow);
-        
+
         enemyIsDead(player);
     }
 }
@@ -263,9 +263,16 @@ void Travel::Evoke(Player & player)
 {
     if (rand() % 3 == 0)
     {
-        Fight(Enemy().randomEnemy(this->location.level, rand() % 5)).Evoke(player);
-        if (!player.isAlive())
+        try
+        {
+            Fight(Enemy().randomEnemy(this->location.level, rand() % 5)).Evoke(player);
+            if (!player.isAlive())
             return;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
     vector<string> text = {"Travel to another location was successful!"};
     show_text(text);

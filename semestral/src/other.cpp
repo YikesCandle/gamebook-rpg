@@ -100,6 +100,7 @@ void Equipable::showInfo()
     mvwprintw(itemWindow, 2, 1, "Name: ");
     wprintw(itemWindow, this->name.c_str());
     sprintf(number, " lvl %d", this->level);
+    wprintw(itemWindow, number);
     mvwprintw(itemWindow, 4, 1, "Type: ");
     wprintw(itemWindow, this->type.c_str());
     mvwprintw(itemWindow, 6, 1, "Quality: ");
@@ -220,6 +221,7 @@ int Inventory::read(std::ifstream & file)
         }
         catch (const std::exception &e)
         {
+            std::cerr << e.what() << '\n';
             return 1;
         }
     }
@@ -387,6 +389,7 @@ void Consumable::showInfo()
     mvwprintw(itemWindow, 2, 1, "Name: ");
     wprintw(itemWindow, this->name.c_str());
     sprintf(number, " lvl %d", this->level);
+    wprintw(itemWindow, number);
     mvwprintw(itemWindow, 4, 1, "This item can be used only once.");
     mvwprintw(itemWindow, 6, 1, "Healing:");
     sprintf(number, "\t%d", this->health);
@@ -456,369 +459,84 @@ std::shared_ptr<Item> Consumable::randomItem(int level, int id, int state)
 
 shared_ptr<Item> Equipable::randomItem(int level, int id, int state)
 {
-    switch(id)
+    shared_ptr<Equipable> item = make_shared<Equipable>();
+
+    ifstream file("examples/equipables.txt");
+    if (!file.is_open())
+        throw runtime_error("Error while loading enemy from examples/equipables.txt - error open file");
+    string line;
+    bool found = false;
+    while (getline(file, line))
     {
-        case 0:
+        char tmp[20];
+        sprintf(tmp, "ITEM_ID: %d", id);
+        if (line == string(tmp))
         {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "weapon";
-            item->name = "basic dagger";
-            item->level = level;
-            item->cost = item->level * 10;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 1 * level;
-
-            Ability ability1;
-            ability1.intScale = 0;
-            ability1.name = "quick cut";
-            ability1.strengthScale = 2;
-            if (state > 90) ability1.strengthScale++;
-            if (state < 60) ability1.strengthScale--;
-            ability1.timeNeeded = 2;
-            item->abilities.push_back(ability1);
-
-            Ability ability2;
-            ability2.intScale = 0;
-            ability2.name = "heavy cut";
-            ability2.strengthScale = 4;
-            if (state > 90) ability2.strengthScale += 2;
-            if (state < 60) ability2.strengthScale -= 2;
-            ability2.timeNeeded = 5;
-            item->abilities.push_back(ability2);
-            if (state > 90)
-            {
-                stats.inteligence += 2 * level;
-                stats.strenght += 1 * level;
-                stats.defence += 0 * level;
-                stats.health += 5 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 0 * level;
-                stats.strenght -= 1 * level;
-                stats.defence -= 0 * level;
-                stats.health -= 0 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 1:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "weapon";
-            item->name = "basic sword";
-            item->level = level;
-            item->cost = item->level * 15;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 2 * level;
-
-            Ability ability1;
-            ability1.intScale = 0;
-            ability1.name = "fast lunge";
-            ability1.strengthScale = 3;
-            if (state > 90) ability1.strengthScale++;
-            if (state < 60) ability1.strengthScale--;
-            ability1.timeNeeded = 3;
-            item->abilities.push_back(ability1);
-
-            Ability ability2;
-            ability2.intScale = 0;
-            ability2.name = "heavy sword attack";
-            ability2.strengthScale = 7;
-            if (state > 90) ability2.strengthScale += 3;
-            if (state < 60) ability2.strengthScale -= 3;
-            ability2.timeNeeded = 7;
-            item->abilities.push_back(ability2);
-            if (state > 90)
-            {
-                stats.inteligence += 0 * level;
-                stats.strenght += 2 * level;
-                stats.defence += 0 * level;
-                stats.health += 8 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 0 * level;
-                stats.strenght -= 1 * level;
-                stats.defence -= 0 * level;
-                stats.health -= 0 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 2:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "weapon";
-            item->name = "hammer";
-            item->level = level;
-            item->cost = item->level * 15;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 5 * level;
-
-            Ability ability1;
-            ability1.intScale = 0;
-            ability1.name = "smash";
-            ability1.strengthScale = 6;
-            if (state > 90) ability1.strengthScale += 4;
-            if (state < 60) ability1.strengthScale -= 2;
-            ability1.timeNeeded = 10;
-            item->abilities.push_back(ability1);
-            if (state > 90)
-            {
-                stats.inteligence += 0 * level;
-                stats.strenght += 2 * level;
-                stats.defence += 0 * level;
-                stats.health += 15 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 0 * level;
-                stats.strenght -= 2 * level;
-                stats.defence -= 0 * level;
-                stats.health -= 0 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 3:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "weapon";
-            item->name = "magic stick";
-            item->level = level;
-            item->cost = item->level * 30;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 1 * level;
-            stats.inteligence = 2 * level;
-
-            Ability ability1;
-            ability1.intScale = 5;
-            ability1.name = "fireball";
-            ability1.strengthScale = 0;
-            if (state > 90) ability1.intScale += 2;
-            if (state < 60) ability1.intScale -= 2;
-            ability1.timeNeeded = 4;
-            item->abilities.push_back(ability1);
-
-            Ability ability2;
-            ability2.intScale = 20;
-            ability2.name = "supernova";
-            ability2.strengthScale = 0;
-            if (state > 90) ability2.intScale += 5;
-            if (state < 60) ability2.strengthScale -= 5;
-            ability2.timeNeeded = 15;
-            item->abilities.push_back(ability2);
-            if (state > 90)
-            {
-                stats.inteligence += 2 * level;
-                stats.strenght += 0 * level;
-                stats.defence += 0 * level;
-                stats.health += 5 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 1 * level;
-                stats.strenght -= 1 * level;
-                stats.defence -= 0 * level;
-                stats.health -= 0 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 4:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "armor";
-            item->name = "leather armor";
-            item->level = level;
-            item->cost = item->level * 10;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 1 * level;
-            stats.inteligence = 2 * level;
-            stats.defence = 1 * level;
-            stats.health = 20 * level;
-            if (state > 90)
-            {
-                stats.inteligence += 2 * level;
-                stats.strenght += 0 * level;
-                stats.defence += 1 * level;
-                stats.health += 10 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 1 * level;
-                stats.strenght -= 1 * level;
-                stats.defence -= 1 * level;
-                stats.health -= 8 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 5:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "armor";
-            item->name = "plate armor";
-            item->level = level;
-            item->cost = item->level * 20;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 2 * level;
-            stats.defence = 2 * level;
-            stats.health = 40 * level;
-            if (state > 90)
-            {
-                stats.inteligence += 0 * level;
-                stats.strenght += 2 * level;
-                stats.defence += 2 * level;
-                stats.health += 20 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 0 * level;
-                stats.strenght -= 1 * level;
-                stats.defence -= 1 * level;
-                stats.health -= 10 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 6:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "helmet";
-            item->name = "leather helmet";
-            item->level = level;
-            item->cost = item->level * 10;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 0 * level;
-            stats.inteligence = 3 * level;
-            stats.defence = 1 * level;
-            stats.health = 5 * level;
-            if (state > 90)
-            {
-                stats.inteligence += 1 * level;
-                stats.strenght += 0 * level;
-                stats.defence += 1 * level;
-                stats.health += 5 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 1 * level;
-                stats.strenght -= 0 * level;
-                stats.defence -= 1 * level;
-                stats.health -= 2 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 7:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "helmet";
-            item->name = "plate helmet";
-            item->level = level;
-            item->cost = item->level * 20;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 3 * level;
-            stats.inteligence = 0 * level;
-            stats.defence = 1 * level;
-            stats.health = 10 * level;
-            if (state > 90)
-            {
-                stats.inteligence += 0 * level;
-                stats.strenght += 2 * level;
-                stats.defence += 1 * level;
-                stats.health += 5 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 0 * level;
-                stats.strenght -= 1 * level;
-                stats.defence -= 1 * level;
-                stats.health -= 3 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 8:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "boots";
-            item->name = "leather boots";
-            item->level = level;
-            item->cost = item->level * 7;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 1 * level;
-            stats.inteligence = 2 * level;
-            stats.defence = 1 * level;
-            stats.health = 5 * level;
-            if (state > 90)
-            {
-                stats.inteligence += 1 * level;
-                stats.strenght += 0 * level;
-                stats.defence += 1 * level;
-                stats.health += 4 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 1 * level;
-                stats.strenght -= 1 * level;
-                stats.defence -= 1 * level;
-                stats.health -= 2 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
-        }
-        case 9:
-        {
-            shared_ptr<Equipable> item = make_shared<Equipable>();
-            item->type = "boots";
-            item->name = "plate boots";
-            item->level = level;
-            item->cost = item->level * 14;
-            item->quality = state;
-            Stats stats;
-            stats.strenght = 2 * level;
-            stats.inteligence = 0 * level;
-            stats.defence = 2 * level;
-            stats.health = 9 * level;
-            if (state > 90)
-            {
-                stats.inteligence += 0;
-                stats.strenght += 2 * level;
-                stats.defence += 1 * level;
-                stats.health += 4 * level;
-            }
-            else if (state < 70)
-            {
-                stats.inteligence -= 0;
-                stats.strenght -= 2 * level;
-                stats.defence -= 1 * level;
-                stats.health -= 3 * level;
-            }
-            item->stats = stats;
-            item->ID = ITEM_ID++;
-            return item;
+            found = true;
+            break;
         }
     }
-    return make_shared<Item>(Item());
+    if (!found)
+    {
+        char errortxt[100];
+        sprintf(errortxt, "ITEM ID not found: %d", id);
+        throw runtime_error(errortxt);
+    }
+    string trashstr;
+    string str;
+    if (!(file >> trashstr >> str) || trashstr != "TYPE:")
+        throw runtime_error("Error while loading enemy from examples/equipables.txt | error at name");
+    item->type = str;
+    if (!(file >> trashstr >> str) || trashstr != "NAME:")
+        throw runtime_error("Error while loading enemy from examples/equipables.txt | error at name");
+    item->name = str;
+
+    item->level = level;
+    item->cost = item->level * 20;
+    item->quality = state;
+
+    int h, s, d, i;
+    if (!(file >> str >> h >> s >> d >> i) || str != "STATS:")
+        throw runtime_error("Error while loading enemy from examples/equipables.txt | error at stats");
+    stats = Stats(h * level, s * level, d * level, i * level);
+    if (state > 90)
+    {
+        stats.inteligence += stats.inteligence / 2;
+        stats.strenght += stats.strenght / 2;
+        stats.defence += stats.defence / 2;
+        stats.health += stats.health / 2;
+    }
+    else if (state < 60)
+    {
+        stats.inteligence -= stats.inteligence / 2;
+        stats.strenght -= stats.strenght / 2;
+        stats.defence -= stats.defence / 2;
+        stats.health -= stats.health / 2;
+    }
+    item->stats = stats;
+
+    int number;
+    if (!(file >> str >> number) || number < 0 || number > 10 || str != "ABILITIES:")
+        throw runtime_error("Error while loading enemy from examples/equipables.txt | error at number of abilities");
+    for (int i = 0; i < number; ++i)
+    {
+        Ability ab;
+        // ability name
+        string teststr;
+        if (!(file >> teststr >> str) || teststr != "ABILITY_NAME:")
+            throw runtime_error("Error while loading enemy from examples/equipables.txt | ability name");
+        ab.name = str;
+        if (!(file >> str >> h >> s >> d) || str != "ABILITY_DATA:")
+            throw runtime_error("Error while loading enemy from examples/equipables.txt | ability data");
+        ab.intScale = h;
+        ab.strengthScale = s;
+        ab.timeNeeded = d;
+        if (state > 90) ab.strengthScale += ab.strengthScale / 2;
+        if (state < 60) ab.strengthScale -= ab.strengthScale / 2 ;
+        if (state > 90) ab.intScale += ab.strengthScale / 2;
+        if (state < 60) ab.intScale -= ab.strengthScale / 2 ;
+        item->abilities.push_back(ab);
+    }
+    item->ID = ITEM_ID++;
+    return item;
 }

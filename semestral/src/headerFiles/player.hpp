@@ -20,7 +20,7 @@ class Player
         void set_name(const std::string & playerName);
 
         //!! sets Player basic data, should be called before starting new game
-        void newGamePlayer();
+        int newGamePlayer();
 
         //!! adds experience to players experience (opperator +=)
         void add_experience(int exp);

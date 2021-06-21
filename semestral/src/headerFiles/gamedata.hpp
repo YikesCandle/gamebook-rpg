@@ -30,7 +30,7 @@ class Map
         //! does nothing
         void showMap();
         //! generates new Map - should be called before starting new game
-        void newGameMap();
+        int newGameMap();
     private:
         friend class Game;
         friend class GameData;

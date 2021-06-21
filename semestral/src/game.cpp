@@ -29,14 +29,16 @@ void Game::Start()
         switch(select)
         {
             case 0:
-                this->init_new_game_data();
+                if (this->init_new_game_data())
+                    continue;
                 if (this->Create_character())
                     continue;
                 this->Show_story();
                 this->Play();
                 break;
             case 1:
-                this->init_load_game_data();
+                if (this->init_load_game_data())
+                    continue;
                 this->Play();
                 break;
             case 2:
@@ -122,14 +124,25 @@ void Game::Load_data()
 {
     
 }
-void Game::init_new_game_data()
+int Game::init_new_game_data()
 {
     this->Data = GameData();
-    this->Data.player.newGamePlayer();
-    this->Data.map.newGameMap();
+    if (this->Data.player.newGamePlayer())
+    {
+        vector<string> tmptext = {"new-game person load failed -> some files are probabbly corrupted"};
+        show_text(tmptext);
+        return 1;
+    }
+    if (this->Data.map.newGameMap())
+    {
+        vector<string> tmptext = {"error occured while loading map -> some files are probabbly corrupted"};
+        show_text(tmptext);
+        return 1;
+    }
+    return 0;
 }
 
-void Game::init_load_game_data()
+int Game::init_load_game_data()
 {
     
     bool err = false;
@@ -147,10 +160,20 @@ void Game::init_load_game_data()
         vector<string> tmp = {"Load failed, new-game person was loaded."};
         show_text(tmp);
         this->Data.player = Player();
-        this->Data.player.newGamePlayer();
+        if (this->Data.player.newGamePlayer())
+        {
+            vector<string> tmptext = {"new-game person load failed -> some files are probabbly corrupted"};
+            show_text(tmptext);
+            return 1;
+        }
     }
-    this->Data.map.newGameMap();
-    return;
+    if (this->Data.map.newGameMap())
+    {
+        vector<string> tmptext = {"error occured while loading map -> some files are probabbly corrupted"};
+        show_text(tmptext);
+        return 1;
+    }
+    return 0;
 }
 void Game::LookAround()
 {

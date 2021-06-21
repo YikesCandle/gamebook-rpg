@@ -67,6 +67,13 @@ class Fight : public Action
     private:
         //! prints the current state of the fight
         void pausePrint(std::vector<std::string> & lines, WINDOW * fightWindow, int p1, int p2, int e1, int e2);
+        void enemyAttack(std::vector<std::string> & lines, WINDOW * fightWindow, Player & player, int & playerAbilityTime,
+                            int & enemyAbilityTime, Ability & playerAbility, Ability & enemyAbility);
+        int playerAttack(std::vector<std::string> & lines, WINDOW * fightWindow, Player & player, int & playerAbilityTime,
+                            int & enemyAbilityTime, Ability & playerAbility, Ability & enemyAbility);
+        void PEattack(std::vector<std::string> & lines, WINDOW * fightWindow, Player & player, int & playerAbilityTime,
+                            int & enemyAbilityTime, Ability & playerAbility, Ability & enemyAbility);
+        void enemyIsDead(Player & player);
         Enemy enemy;
 };
 

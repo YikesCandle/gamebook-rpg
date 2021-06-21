@@ -29,76 +29,18 @@ void Fight::Evoke(Player & player)
     {
         if (playerAbilityTime == 0 && enemyAbilityTime == 0)
         {
-            vector<string> choices;
-            for (const Ability & ability : player.get_abilities())
-                choices.push_back(ability.name);
-            Choicer menubar(choices);
-            playerAbility = player.get_abilities()[menubar.ask_for_choice()];
-            playerAbilityTime += playerAbility.timeNeeded;
-            char tmp[100];
-            sprintf(tmp, "You are preparing an ability: %s (%d)", playerAbility.name.c_str(), playerAbility.timeNeeded);
-            lines.push_back(string(tmp));
-            usleep(500000);
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
-            
-
-            enemyAbility = this->enemy.abilities[rand() % (int)this->enemy.abilities.size()];
-            enemyAbilityTime += enemyAbility.timeNeeded;
-            sprintf(tmp, "Enemy is preparing an ability: %s (%d)", enemyAbility.name.c_str(), enemyAbility.timeNeeded);
-            lines.push_back(string(tmp));
-            usleep(500000);
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+            PEattack(lines, fightWindow, player, playerAbilityTime, enemyAbilityTime, playerAbility, enemyAbility);
             continue;
         }
         //player attack
         if (playerAbilityTime <= enemyAbilityTime)
         {
-            int damage = playerAbility.calculateDmg(player.level, player.stats, enemy.stats);
-            enemy.actualHealth -= damage;
-            if (enemy.actualHealth < 0)
-                enemy.actualHealth = 0;
-            char tmp[100];
-            sprintf(tmp, "(%d) You dealt %d damage.", playerAbilityTime, damage);
-            lines.push_back(string(tmp));
-            usleep(500000);
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
-            vector<string> choices;
-
-            if (enemy.actualHealth == 0)
+            if (playerAttack(lines, fightWindow, player, playerAbilityTime, enemyAbilityTime, playerAbility, enemyAbility))
                 break;
-
-            for (const Ability & ability : player.get_abilities())
-                choices.push_back(ability.name);
-            Choicer menubar(choices);
-            playerAbility = player.get_abilities()[menubar.ask_for_choice()];
-            playerAbilityTime += playerAbility.timeNeeded;
-
-            sprintf(tmp, "You are preparing an ability: %s (%d)", playerAbility.name.c_str(), playerAbilityTime);
-            lines.push_back(string(tmp));
-            usleep(500000);
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
         }
         //enemy attack
         else
-        {
-            int damage = enemyAbility.calculateDmg(enemy.level, enemy.stats, player.stats);
-            player.actualHealth -= damage;
-            if (player.actualHealth <= 0)
-                player.actualHealth = 0;
-            char tmp[100];
-            sprintf(tmp, "(%d) Enemy dealt %d damage.", enemyAbilityTime, damage);
-            lines.push_back(string(tmp));
-            usleep(500000);
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
-
-            vector<string> choices;
-            enemyAbility = this->enemy.abilities[rand() % (int)this->enemy.abilities.size()];
-            enemyAbilityTime += enemyAbility.timeNeeded;
-            sprintf(tmp, "Enemy is preparing an ability: %s (%d)", enemyAbility.name.c_str(), enemyAbilityTime);
-            lines.push_back(string(tmp));
-            usleep(500000);
-            pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
-        }
+            enemyAttack(lines, fightWindow, player, playerAbilityTime, enemyAbilityTime, playerAbility, enemyAbility);
     }
     vector<string> menu = {"End"};
     Choicer menubar(menu);
@@ -120,39 +62,119 @@ void Fight::Evoke(Player & player)
         werase(fightWindow);
         wrefresh(fightWindow);
         delwin(fightWindow);
+        
+        enemyIsDead(player);
+    }
+}
 
-        vector<string> text;
-        text.push_back("Congratulations! You won the fight.");
-        char tmp[100] = {};
+void Fight::enemyAttack(std::vector<std::string> & lines, WINDOW * fightWindow, Player & player, int & playerAbilityTime,
+                            int & enemyAbilityTime, Ability & playerAbility, Ability & enemyAbility)
+{
+    int damage = enemyAbility.calculateDmg(enemy.level, enemy.stats, player.stats);
+    player.actualHealth -= damage;
+    if (player.actualHealth <= 0)
+        player.actualHealth = 0;
+    char tmp[100];
+    sprintf(tmp, "(%d) Enemy dealt %d damage.", enemyAbilityTime, damage);
+    lines.push_back(string(tmp));
+    usleep(500000);
+    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
 
-        sprintf(tmp, "EXP earned: %d", enemy.experience);
+    vector<string> choices;
+    enemyAbility = this->enemy.abilities[rand() % (int)this->enemy.abilities.size()];
+    enemyAbilityTime += enemyAbility.timeNeeded;
+    sprintf(tmp, "Enemy is preparing an ability: %s (%d)", enemyAbility.name.c_str(), enemyAbilityTime);
+    lines.push_back(string(tmp));
+    usleep(500000);
+    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+}
+
+int Fight::playerAttack(std::vector<std::string> & lines, WINDOW * fightWindow, Player & player, int & playerAbilityTime,
+                            int & enemyAbilityTime, Ability & playerAbility, Ability & enemyAbility)
+{
+    int damage = playerAbility.calculateDmg(player.level, player.stats, enemy.stats);
+    enemy.actualHealth -= damage;
+    if (enemy.actualHealth < 0)
+        enemy.actualHealth = 0;
+    char tmp[100];
+    sprintf(tmp, "(%d) You dealt %d damage.", playerAbilityTime, damage);
+    lines.push_back(string(tmp));
+    usleep(500000);
+    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+    vector<string> choices;
+
+    if (enemy.actualHealth == 0)
+        return 1;
+
+    for (const Ability & ability : player.get_abilities())
+        choices.push_back(ability.name);
+    Choicer menubar(choices);
+    playerAbility = player.get_abilities()[menubar.ask_for_choice()];
+    playerAbilityTime += playerAbility.timeNeeded;
+
+    sprintf(tmp, "You are preparing an ability: %s (%d)", playerAbility.name.c_str(), playerAbilityTime);
+    lines.push_back(string(tmp));
+    usleep(500000);
+    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+    return 0;
+}
+
+void Fight::PEattack(std::vector<std::string> & lines, WINDOW * fightWindow, Player & player, int & playerAbilityTime,
+                            int & enemyAbilityTime, Ability & playerAbility, Ability & enemyAbility)
+{
+    vector<string> choices;
+    for (const Ability & ability : player.get_abilities())
+        choices.push_back(ability.name);
+    Choicer menubar(choices);
+    playerAbility = player.get_abilities()[menubar.ask_for_choice()];
+    playerAbilityTime += playerAbility.timeNeeded;
+    char tmp[100];
+    sprintf(tmp, "You are preparing an ability: %s (%d)", playerAbility.name.c_str(), playerAbility.timeNeeded);
+    lines.push_back(string(tmp));
+    usleep(500000);
+    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+    
+    enemyAbility = this->enemy.abilities[rand() % (int)this->enemy.abilities.size()];
+    enemyAbilityTime += enemyAbility.timeNeeded;
+    sprintf(tmp, "Enemy is preparing an ability: %s (%d)", enemyAbility.name.c_str(), enemyAbility.timeNeeded);
+    lines.push_back(string(tmp));
+    usleep(500000);
+    pausePrint(lines, fightWindow, player.actualHealth, player.stats.health, enemy.actualHealth, enemy.stats.health);
+}
+
+void Fight::enemyIsDead(Player & player)
+{
+    vector<string> text;
+    text.push_back("Congratulations! You won the fight.");
+    char tmp[100] = {};
+
+    sprintf(tmp, "EXP earned: %d", enemy.experience);
+    text.push_back(string(tmp));
+    player.add_experience(enemy.experience);
+    vector<shared_ptr<Item> > drops = enemy.drops;
+    for (size_t i = 0; i < drops.size(); ++i)
+    {
+        sprintf(tmp, "Item earned: %s lvl %d", drops[i]->get_name().c_str(), drops[i]->get_level());
         text.push_back(string(tmp));
-        player.add_experience(enemy.experience);
-        vector<shared_ptr<Item> > drops = enemy.drops;
-        for (size_t i = 0; i < drops.size(); ++i)
-        {
-            sprintf(tmp, "Item earned: %s lvl %d", drops[i]->get_name().c_str(), drops[i]->get_level());
-            text.push_back(string(tmp));
-            player.inventory.add_item(drops[i]);
-        }
-        show_text(text);
-        double newLevel = (sqrt(2*(double)player.experience + 25) - 5) / 10.0;
-        int nl = newLevel + 1;
+        player.inventory.add_item(drops[i]);
+    }
+    show_text(text);
+    double newLevel = (sqrt(2*(double)player.experience + 25) - 5) / 10.0;
+    int nl = newLevel + 1;
 
-        if (nl > player.level)
-        {
-            Stats addStats;
-            addStats.defence = nl - player.level;
-            addStats.strenght = nl - player.level;
-            addStats.health = (nl - player.level) * nl + 100;
-            addStats.inteligence = nl - player.level;
-            player.stats += addStats;
-            player.level = nl;
-            char tmptmp[100];
-            sprintf(tmptmp, "You leveled up! You stats went up. Your level: %d", nl);
-            vector<string> tmptmptmpt = {string(tmptmp)};
-            show_text(tmptmptmpt);
-        }
+    if (nl > player.level)
+    {
+        Stats addStats;
+        addStats.defence = nl - player.level;
+        addStats.strenght = nl - player.level;
+        addStats.health = (nl - player.level) * nl + 100;
+        addStats.inteligence = nl - player.level;
+        player.stats += addStats;
+        player.level = nl;
+        char tmptmp[100];
+        sprintf(tmptmp, "You leveled up! You stats went up. Your level: %d", nl);
+        vector<string> tmptmptmpt = {string(tmptmp)};
+        show_text(tmptmptmpt);
     }
 }
 

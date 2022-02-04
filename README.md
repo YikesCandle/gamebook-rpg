@@ -1,1 +1,1 @@
-Gamebook RPG src in semestral
+projekt Gamebook RPG se nachází ve složce semestral
